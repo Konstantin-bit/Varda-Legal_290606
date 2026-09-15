@@ -48,9 +48,6 @@ import execFigmaImage from "./assets/images/figma.png"
 
 import munichImage from "./assets/images/vardalegal_munich.png"
 
-import vardalegalEndframe from "./assets/images/vardalegal_endframe.png"
-import vardalegalEndframeEng from "./assets/images/vardalegal_endframeeng.png"
-
 import konstiArch from "./assets/images/konsti2024_arch.png"
 import konstiImage from "./assets/images/konsti.png"
 import konstineuImage from "./assets/images/konstineu.png"
@@ -972,7 +969,23 @@ export default function App() {
           }
         }, 150);
       } else {
-        const anchors = ["#home", "#fokus", "#methode", "#beispiel-output", "#wir", "#letsgo"];
+        const anchors = [
+          "#home", 
+          "#fokus", 
+          "#methode", 
+          "#beispiel-output", 
+          "#wir", 
+          "#letsgo",
+          "#ma",
+          "#transaktion",
+          "#selected-deal",
+          "#startups-scaleups",
+          "#mandate",
+          "#so-arbeitet-varda",
+          "#manifest",
+          "#konstantin",
+          "#kontakt"
+        ];
         if (anchors.includes(hash)) {
           setCurrentView("website");
           setTimeout(() => {
@@ -1001,8 +1014,12 @@ export default function App() {
       ? ("https://www.vardalegal.com" + window.location.pathname + (window.location.hash ? window.location.hash : ""))
       : "https://www.vardalegal.com";
 
-    let pageTitle = "Varda Legal | Rechtsberatung für klare Entscheidungen";
-    let pageDescription = "Varda Legal ist eine Kanzlei für unternehmerische Entscheidungen. Wir beraten zu Corporate, Commercial, M&A und Tech — und übersetzen rechtliche Komplexität in klare Handlungsempfehlungen.";
+    let pageTitle = lang === "DE" 
+      ? "Varda Legal | Corporate & M&A für Gründer und Wachstumsunternehmen"
+      : "Varda Legal | Corporate & M&A for Founders and Growth Companies";
+    let pageDescription = lang === "DE"
+      ? "Varda Legal berät Gründer, Startups, Scale-ups und Gesellschafter bei Corporate-Themen, Finanzierungen, Unternehmenskäufen und Unternehmensverkäufen."
+      : "Varda Legal advises founders, startups, scale-ups and shareholders on corporate matters, financing, company acquisitions and company sales.";
     let pageImage = `${origin}${execFigmaImage}`;
     let pageType = "website";
 
@@ -1068,7 +1085,9 @@ export default function App() {
         "@id": "https://www.vardalegal.com/#legalservice",
         "name": "Varda Legal",
         "url": "https://www.vardalegal.com",
-        "description": "Varda Legal ist eine Kanzlei für unternehmerische Entscheidungen. Wir beraten zu Corporate, Commercial, M&A und Tech.",
+        "description": lang === "DE"
+          ? "Varda Legal berät Gründer, Startups, Scale-ups und Gesellschafter bei Corporate-Themen, Finanzierungen, Unternehmenskäufen und Unternehmensverkäufen."
+          : "Varda Legal advises founders, startups, scale-ups and shareholders on corporate matters, financing, company acquisitions and company sales.",
         "areaServed": "DE",
         "address": {
           "@type": "PostalAddress",
@@ -1077,7 +1096,32 @@ export default function App() {
         },
         "founder": {
           "@type": "Person",
-          "name": "Dr. Konstantin Filbinger"
+          "name": "Dr. Konstantin Filbinger",
+          "jobTitle": "Rechtsanwalt",
+          "hasCredential": [
+            {
+              "@type": "EducationalOccupationalCredential",
+              "credentialCategory": "Lehrauftrag",
+              "recognizedBy": {
+                "@type": "CollegeOrUniversity",
+                "name": "Berlin College of Business and Technology"
+              },
+              "about": ["International Corporate and Tax Law", "Private Law"]
+            }
+          ]
+        },
+        "knowsAbout": [
+          "Corporate & M&A",
+          "Gesellschaftsrecht",
+          "M&A-Transaktionen",
+          "Unternehmenskauf",
+          "Unternehmensverkauf",
+          "Venture Capital & Finanzierungsrunden",
+          "Gesellschaftervereinbarungen"
+        ],
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "Gründer, Startups, Scale-ups, Gesellschafter und Wachstumsunternehmen"
         }
       }
     ];
@@ -1384,32 +1428,32 @@ export default function App() {
           {/* Desktop Visible Editorial Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8 font-mono text-xs uppercase tracking-widest text-charcoal/80">
             <a 
-              href="#fokus" 
+              href="#ma" 
               onClick={() => setCurrentView("website")}
               className="hover:text-[#C0823E] transition-colors py-1 font-semibold"
             >
-              {lang === "DE" ? "EXPERTISE" : "EXPERTISE"}
+              M&A
             </a>
             <a 
-              href="#methode" 
+              href="#startups-scaleups" 
               onClick={() => setCurrentView("website")}
               className="hover:text-[#C0823E] transition-colors py-1 font-semibold"
             >
-              {lang === "DE" ? "VARDA ANSATZ" : "VARDA APPROACH"}
+              {lang === "DE" ? "STARTUPS & SCALE-UPS" : "STARTUPS & SCALE-UPS"}
             </a>
             <a 
-              href="#beispiel-output" 
+              href="#so-arbeitet-varda" 
               onClick={() => setCurrentView("website")}
               className="hover:text-[#C0823E] transition-colors py-1 font-semibold"
             >
-              {lang === "DE" ? "WAS SIE BEKOMMEN" : "WHAT YOU GET"}
+              {lang === "DE" ? "SO ARBEITET VARDA" : "HOW VARDA WORKS"}
             </a>
             <a 
-              href="#wir" 
+              href="#konstantin" 
               onClick={() => setCurrentView("website")}
               className="hover:text-[#C0823E] transition-colors py-1 font-semibold"
             >
-              {lang === "DE" ? "DR. KONSTANTIN FILBINGER" : "DR KONSTANTIN FILBINGER"}
+              KONSTANTIN
             </a>
             <a 
               href="#letsgo" 
@@ -1573,46 +1617,39 @@ export default function App() {
                   <div className="space-y-3 md:space-y-4 w-full">
                     {[
                       { 
-                        label: lang === "DE" ? "Expertise" : "Expertise", 
-                        target: "#fokus", 
-                        subtitle: lang === "DE" ? "01 / Kernbereiche" : "01 / Core Practice Fields",
+                        label: "M&A", 
+                        target: "#ma", 
+                        subtitle: lang === "DE" ? "01 / Transaktionen" : "01 / Transactions",
                         sec: "01",
-                        desc: lang === "DE" ? "Spezialisierte Beratungsschwerpunkte" : "Specialised practice fields"
+                        desc: lang === "DE" ? "Unternehmensverkauf & M&A-Transaktionen" : "Company sales & M&A transactions"
                       },
                       { 
-                        label: lang === "DE" ? "Varda-Ansatz" : "Varda Approach", 
-                        target: "#methode", 
-                        subtitle: lang === "DE" ? "02 / Arbeitsweise" : "02 / How We Work",
+                        label: lang === "DE" ? "Startups & Scale-ups" : "Startups & Scale-ups", 
+                        target: "#startups-scaleups", 
+                        subtitle: lang === "DE" ? "02 / Mandate" : "02 / Mandates",
                         sec: "02",
-                        desc: lang === "DE" ? "Wirtschaftliche Perspektive & Methode" : "Commercial perspective & method"
+                        desc: lang === "DE" ? "Gründung, Wachstum & operative Verträge" : "Formation, growth & commercial agreements"
                       },
                       { 
-                        label: lang === "DE" ? "Was Sie bekommen" : "What You Get", 
-                        target: "#beispiel-output", 
-                        subtitle: lang === "DE" ? "03 / Klare Empfehlung" : "03 / Clear Recommendation",
+                        label: lang === "DE" ? "So arbeitet Varda" : "How Varda Works", 
+                        target: "#so-arbeitet-varda", 
+                        subtitle: lang === "DE" ? "03 / Methode" : "03 / Methodology",
                         sec: "03",
-                        desc: lang === "DE" ? "Pragmatische Entscheidungen & konkrete nächste Schritte" : "Pragmatic decisions & concrete next steps"
+                        desc: lang === "DE" ? "Vier-Schritte-Methode & klare Handlungsempfehlung" : "Four-step methodology & actionable recommendations"
                       },
                       { 
-                        label: lang === "DE" ? "Dr. Konstantin Filbinger" : "Dr. Konstantin Filbinger", 
-                        target: "#wir", 
-                        subtitle: lang === "DE" ? "04 / Profil & Haltung" : "04 / Profile & Practice",
+                        label: "Konstantin", 
+                        target: "#konstantin", 
+                        subtitle: lang === "DE" ? "04 / Profil" : "04 / Profile",
                         sec: "04",
-                        desc: lang === "DE" ? "Gründer, Haltung & juristische Präzision" : "Founder, ethos & legal precision"
+                        desc: lang === "DE" ? "Dr. Konstantin Filbinger · Hintergrund & Prinzipien" : "Dr. Konstantin Filbinger · Background & principles"
                       },
                       { 
                         label: lang === "DE" ? "Kontakt" : "Contact", 
                         target: "#letsgo", 
                         subtitle: lang === "DE" ? "05 / Erstgespräch" : "05 / Consultation",
                         sec: "05",
-                        desc: lang === "DE" ? "Direkter digitaler Beratungstermin" : "Immediate secure booking scheduler"
-                      },
-                      { 
-                        label: "Varda Navigator", 
-                        target: lang === "DE" ? "#navigator" : "#en/navigator", 
-                        subtitle: lang === "DE" ? "06 / Interactive Tool" : "06 / Interactive Tool",
-                        sec: "06",
-                        desc: lang === "DE" ? "Interaktive Orientierung für unternehmerische Fragen" : "Interactive guide for business questions"
+                        desc: lang === "DE" ? "Direkter Kontakt & Terminvereinbarung" : "Direct contact & consultation"
                       }
                     ].map((menuItem, idx) => (
                       <motion.div 
@@ -1744,7 +1781,7 @@ export default function App() {
                     </a>
                     
                     <a
-                      href="#methode"
+                      href="#so-arbeitet-varda"
                       className="inline-flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-[0.15em] font-bold text-charcoal hover:text-[#C0823E] border-b border-charcoal/40 hover:border-[#C0823E] pb-1 py-3 transition-colors"
                     >
                       <span>{d.hero.secCta}</span>
@@ -1763,10 +1800,10 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Right Column: Konstantin Filbinger Portrait Card & Simplified Decision Graphic */}
-                <div className="lg:col-span-5 space-y-8">
+                {/* Right Column: Konstantin Filbinger Portrait Card (Primary Trust Element) */}
+                <div className="lg:col-span-5 flex justify-center lg:justify-end">
                   {/* Founder / Portrait Card */}
-                  <div className="bg-[#FAF8F4] border border-charcoal/15 p-5 sm:p-6 flex flex-col justify-between group shadow-2xs">
+                  <div className="w-full max-w-sm bg-[#FAF8F4] border border-charcoal/15 p-5 sm:p-6 flex flex-col justify-between group shadow-2xs">
                     <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] bg-stone-100 border border-charcoal/15 overflow-hidden">
                       <img
                         src={konstineuImage}
@@ -1789,537 +1826,390 @@ export default function App() {
                       </p>
                     </div>
                   </div>
-
-                  {/* Simplified Decision Architecture Graphic */}
-                  <div className="w-full">
-                    <DecisionArchitectureBlueprint lang={lang} />
-                  </div>
                 </div>
 
               </div>
             </section>
 
-        {/* SECTION 2: EXPERTISE / BERATUNGSBEREICHE */}
-        <section id="fokus" className="py-20 md:py-28 border-b border-charcoal/10 bg-[#FAF8F4] relative">
-          <div id="beratungsbereiche" className="scroll-mt-24" />
-          
-          {/* Header & Intro */}
-          <div className="space-y-4 mb-16 max-w-4xl">
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
-              <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
-              <span>/</span>
-              <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Beratungsbereiche" : "Areas of Expertise"}</span>
-            </div>
-            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold">
-              01 / {lang === "DE" ? "BERATUNGSBEREICHE" : "AREAS OF EXPERTISE"}
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
-              {lang === "DE"
-                ? "Wo wir Mehrwert schaffen"
-                : "Where we add value"}
-            </h2>
-            <p className="font-sans text-charcoal/80 text-base sm:text-lg leading-relaxed max-w-3xl pt-2">
-              {lang === "DE"
-                ? "Varda berät zu Gesellschaftsstrukturen, Wirtschaftsverträgen, Transaktionen und technologiegeprägten Geschäftsmodellen. Der Anspruch ist nicht, jedes Rechtsgebiet abzudecken, sondern die Fragen zu lösen, die Aufbau, Betrieb und Entwicklung eines Unternehmens bestimmen."
-                : "Varda advises on corporate structures, commercial agreements, transactions and technology-based business models. The focus is not on covering every legal discipline, but on resolving the issues that determine how a business is built, operated and developed."}
-            </p>
-          </div>
+        {/* =========================================================================
+            SECTION 2 — SELECTED TRANSACTION / SOCIAL PROOF
+            ========================================================================= */}
+        <section id="transaktion" aria-labelledby="selected-transaction-heading" className="py-16 md:py-24 border-b border-charcoal/10 relative">
+          <div id="selected-deal" className="scroll-mt-24" />
+          <div id="ma" className="scroll-mt-24" />
 
-          {/* 2x2 Grid of Editorial Expertise Modules */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            {[
-              {
-                id: "corporate",
-                label: lang === "DE" ? "01 · GESELLSCHAFTSRECHT & GOVERNANCE" : "01 · CORPORATE & GOVERNANCE",
-                title: lang === "DE"
-                  ? "Gesellschaftsstrukturen, die auch mit dem Unternehmen weiter funktionieren."
-                  : "Corporate structures that remain workable as the business develops.",
-                description: lang === "DE"
-                  ? "Varda berät Gründer, Gesellschafter und Geschäftsleitungen bei der rechtlichen Struktur des Unternehmens, der Verteilung von Rechten und Verantwortlichkeiten und den Regeln für wesentliche Entscheidungen."
-                  : "Varda advises founders, shareholders and management on the legal structure of the company, the allocation of rights and responsibilities and the rules governing important decisions.",
-                representativeWork: lang === "DE"
-                  ? [
-                      "Gesellschaftsgründungen und Strukturentscheidungen",
-                      "Satzungen und Gesellschaftervereinbarungen",
-                      "Founder Vesting und Leaver-Regelungen",
-                      "Gesellschafterbeschlüsse und Corporate Housekeeping",
-                      "Geschäftsführungsbefugnisse und Zustimmungsvorbehalte",
-                      "Anteilsübertragungen, Kapitalmaßnahmen und Veränderungen im Gesellschafterkreis",
-                      "Holdingstrukturen und gesellschaftsrechtliche Reorganisationen",
-                      "Governance-Vorbereitung für Investoren, Wachstum oder Nachfolge"
-                    ]
-                  : [
-                      "company formations and structural choices",
-                      "articles of association and shareholders’ agreements",
-                      "founder vesting and leaver arrangements",
-                      "shareholder resolutions and corporate housekeeping",
-                      "management authority and reserved matters",
-                      "share transfers, capital measures and changes in ownership",
-                      "holding structures and corporate reorganisations",
-                      "governance preparation for investors, growth or succession"
-                    ],
-                typicalQuestion: lang === "DE"
-                  ? "Wie sollten Beteiligung, Entscheidungsrechte und Verantwortlichkeiten geregelt sein, damit das Unternehmen auch bei unterschiedlichen Interessen handlungsfähig bleibt?"
-                  : "How should ownership, decision rights and responsibilities be structured so that the company can still act when interests diverge?",
-                textLink: lang === "DE" ? "Gesellschaftsrecht & Governance ansehen" : "Explore Corporate & Governance"
-              },
-              {
-                id: "commercial",
-                label: lang === "DE" ? "02 · WIRTSCHAFTSVERTRÄGE" : "02 · COMMERCIAL CONTRACTS",
-                title: lang === "DE"
-                  ? "Verträge, die das wirtschaftliche Geschäft abbilden und Risiken bewusst verteilen."
-                  : "Agreements that reflect the commercial deal and allocate risk deliberately.",
-                description: lang === "DE"
-                  ? "Varda entwirft, prüft und verhandelt die Verträge, auf denen das Geschäft des Mandanten beruht. Im Mittelpunkt stehen rechtliche Wirksamkeit, wirtschaftliche Folgen und praktische Umsetzung."
-                  : "Varda drafts, reviews and negotiates the agreements on which the client’s business depends. The analysis focuses on legal enforceability, commercial consequences and practical implementation.",
-                representativeWork: lang === "DE"
-                  ? [
-                      "Kunden- und Lieferantenverträge",
-                      "Software-, SaaS- und Technologieverträge",
-                      "Entwicklungs-, Lizenz- und Kooperationsverträge",
-                      "Rahmenverträge und Allgemeine Geschäftsbedingungen",
-                      "Vertriebs-, Reseller- und Partnerstrukturen",
-                      "Einkaufsverträge und Vertragswerke großer Kunden",
-                      "Haftungs-, Freistellungs- und Versicherungskonzepte",
-                      "Contract Governance und operative Risikosteuerung"
-                    ]
-                  : [
-                      "customer and supplier agreements",
-                      "software, SaaS and technology contracts",
-                      "development, licensing and cooperation agreements",
-                      "framework agreements and terms and conditions",
-                      "distribution, reseller and partnership structures",
-                      "procurement agreements and customer paper",
-                      "liability, indemnity and insurance structures",
-                      "contract governance, implementation and operational risk controls"
-                    ],
-                typicalQuestion: lang === "DE"
-                  ? "Welche Regelungen beeinflussen die wirtschaftliche Position tatsächlich, und welche Risiken sollten verhandelt, akzeptiert oder auf anderem Weg gesteuert werden?"
-                  : "Which provisions genuinely affect the commercial position, and which risks should be negotiated, accepted or managed in another way?",
-                textLink: lang === "DE" ? "Wirtschaftsverträge ansehen" : "Explore Commercial Contracts"
-              },
-              {
-                id: "transactions",
-                label: lang === "DE" ? "03 · TRANSAKTIONEN & M&A" : "03 · TRANSACTIONS & M&A",
-                title: lang === "DE"
-                  ? "Transaktionsberatung mit Fokus auf Struktur, Vorbereitung und die Punkte, die das Ergebnis beeinflussen."
-                  : "Transaction support focused on structure, preparation and the points that affect the outcome.",
-                description: lang === "DE"
-                  ? "Varda begleitet Unternehmenskäufe, Verkäufe, Beteiligungen und gesellschaftsrechtliche Transaktionen von der frühen Strukturierung bis zur Verhandlung und Umsetzung."
-                  : "Varda supports acquisitions, sales, investments and corporate transactions from early structuring through negotiation and implementation.",
-                representativeWork: lang === "DE"
-                  ? [
-                      "Share Deals und Asset Deals",
-                      "Unternehmensverkäufe und Gründer-Exits",
-                      "Venture- und strategische Beteiligungen",
-                      "Strukturierung und Vorbereitung von Transaktionen",
-                      "Legal Due Diligence und Priorisierung wesentlicher Risiken",
-                      "Term Sheets, Letters of Intent und Transaktionsdokumentation",
-                      "Disclosure-Prozesse und Verhandlungsbegleitung",
-                      "Signing, Closing und Post-Closing-Umsetzung",
-                      "Koordination mit Steuerberatern, Notaren und Spezialberatern"
-                    ]
-                  : [
-                      "share and asset acquisitions",
-                      "company sales and founder exits",
-                      "venture and strategic investments",
-                      "transaction structuring and preparation",
-                      "legal due diligence and risk prioritisation",
-                      "term sheets, letters of intent and transaction documents",
-                      "disclosure processes and negotiation support",
-                      "signing, closing and post-closing implementation",
-                      "coordination with tax advisers, notaries and specialist counsel"
-                    ],
-                typicalQuestion: lang === "DE"
-                  ? "Welche Themen können Wert, Durchführbarkeit oder Zeitplan der Transaktion verändern, und was sollte das Management klären, bevor die Verhandlung teuer wird?"
-                  : "Which issues can change the value, feasibility or timing of the transaction, and which points should management resolve before negotiations become expensive?",
-                textLink: lang === "DE" ? "Transaktionen & M&A ansehen" : "Explore Transactions & M&A"
-              },
-              {
-                id: "tech-data",
-                label: lang === "DE" ? "04 · TECHNOLOGIE, DATEN & DIGITALE GESCHÄFTSMODELLE" : "04 · TECHNOLOGY, DATA & DIGITAL BUSINESS MODELS",
-                title: lang === "DE"
-                  ? "Rechtliche Strukturen für Produkte und Geschäftsmodelle, die von Technologie und Daten geprägt sind."
-                  : "Legal structures for products and business models shaped by technology and data.",
-                description: lang === "DE"
-                  ? "Varda hilft Technologieunternehmen dabei, Produkte, Datenflüsse und kommerzielle Modelle in klare Vertragsbeziehungen, Verantwortlichkeiten und Umsetzungsprioritäten zu übersetzen."
-                  : "Varda helps technology companies translate products, data flows and commercial models into clear contractual relationships, responsibilities and implementation priorities.",
-                representativeWork: lang === "DE"
-                  ? [
-                      "Software-, Plattform- und digitale Servicemodelle",
-                      "Datenzugang, Datenteilung und Data-Space-Strukturen",
-                      "KI-gestützte Produkte und Technologieeinkauf",
-                      "IP-Zuordnung und Lizenzstrukturen",
-                      "Produktrollen und vertragliche Verantwortungsmodelle",
-                      "Technologiepartnerschaften und Entwicklungsprojekte",
-                      "vertragliche Regelung datenbezogener Verantwortlichkeiten",
-                      "rechtliche Gestaltung skalierbarer B2B-Angebote",
-                      "Koordination spezialisierter regulatorischer oder datenschutzrechtlicher Beratung, soweit erforderlich"
-                    ]
-                  : [
-                      "software, platform and digital-service models",
-                      "data access, data sharing and data-space arrangements",
-                      "AI-enabled products and technology procurement",
-                      "intellectual-property ownership and licensing structures",
-                      "product roles and contractual responsibility models",
-                      "technology partnerships and development projects",
-                      "data-related contractual allocation and implementation",
-                      "legal design for scalable B2B offerings",
-                      "coordination of specialist regulatory or data-protection advice where required"
-                    ],
-                typicalQuestion: lang === "DE"
-                  ? "Wie müssen rechtliche Struktur, Verträge und Verantwortlichkeiten gestaltet sein, damit das Produkt wie geplant eingeführt, verkauft und skaliert werden kann?"
-                  : "How must the legal structure, contracts and responsibilities be designed so that the product can be launched, sold and scaled as intended?",
-                textLink: lang === "DE" ? "Technologie & Daten ansehen" : "Explore Technology & Data"
-              }
-            ].map((module, mIdx) => (
-              <div 
-                key={mIdx}
-                className="border border-charcoal/15 bg-white/70 p-6 sm:p-8 md:p-10 flex flex-col justify-between transition-all duration-300 hover:border-charcoal/35 shadow-2xs group"
-              >
-                <div className="space-y-6">
-                  {/* Module Label Header */}
-                  <div className="border-b border-charcoal/10 pb-3 flex justify-between items-center">
-                    <span className="font-mono text-[10px] sm:text-xs text-[#C0823E] font-bold uppercase tracking-widest">
-                      {module.label}
-                    </span>
-                  </div>
-
-                  {/* Module Title */}
-                  <h3 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug">
-                    {module.title}
-                  </h3>
-
-                  {/* Positioning Sentence / Description */}
-                  <p className="font-sans text-xs sm:text-sm text-charcoal/80 leading-relaxed">
-                    {module.description}
-                  </p>
-
-                  {/* Representative Work List */}
-                  <div className="pt-4 border-t border-charcoal/10 space-y-3">
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-charcoal/50 font-bold block">
-                      {lang === "DE" ? "Repräsentative Mandate & Gegenstände" : "Representative Work & Scope"}
-                    </span>
-                    <ul className="space-y-2 pt-0.5">
-                      {module.representativeWork.map((item, itemIdx) => (
-                        <li key={itemIdx} className="flex items-start gap-2.5 font-sans text-xs sm:text-sm text-charcoal/85 leading-snug">
-                          <span className="text-[#C0823E] font-semibold select-none text-xs flex-shrink-0 mt-0.5">—</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Typical Question Box */}
-                  <div className="pt-4 mt-4 border-t border-charcoal/10 bg-[#FAF8F4] p-4 border-l-2 border-[#C0823E] space-y-1.5">
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-[#C0823E] font-bold block">
-                      {lang === "DE" ? "Typische Fragestellung" : "Typical Question"}
-                    </span>
-                    <p className="font-serif italic text-xs sm:text-sm text-charcoal/90 leading-relaxed">
-                      "{module.typicalQuestion}"
-                    </p>
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            
+            {/* Left / Secondary Column (lg:col-span-5): Deal Label, Headline, Description & Facts */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Deal Label / Context */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
+                  <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
+                  <span>/</span>
+                  <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Transaktion" : "Transaction"}</span>
                 </div>
+                <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
+                  {lang === "DE" ? "AUSGEWÄHLTE TRANSAKTION" : "SELECTED TRANSACTION"}
+                </span>
+              </div>
 
-                {/* Restrained Text Link */}
-                <div className="pt-6 mt-6 border-t border-charcoal/10">
-                  <a
-                    href="#letsgo"
-                    className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider font-semibold text-charcoal hover:text-[#C0823E] transition-colors"
-                  >
-                    <span>{module.textLink}</span>
-                    <span className="font-sans font-normal group-hover:translate-x-1 transition-transform">→</span>
-                  </a>
+              {/* Transaction as Headline & Concise Description */}
+              <div className="space-y-4">
+                <h2 id="selected-transaction-heading" className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
+                  klima&so <span className="text-[#C0823E] font-sans font-light mx-1 md:mx-2" aria-hidden="true">→</span> PYURE
+                </h2>
+                <p className="font-sans text-charcoal/85 text-base sm:text-lg leading-relaxed pt-1">
+                  {lang === "DE"
+                    ? "Varda hat die Gesellschafter von klima&so beim Verkauf des Unternehmens an PYURE beraten."
+                    : "Varda advised the shareholders of klima&so on the sale of the company to PYURE."}
+                </p>
+              </div>
+
+              {/* Editorial Deal Credential Facts */}
+              <div className="border border-charcoal/15 bg-white p-5 sm:p-6 space-y-3 shadow-2xs">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
+                  [ {lang === "DE" ? "TRANSAKTIONSDETAILS" : "TRANSACTION DETAILS"} ]
+                </span>
+
+                <div className="space-y-2 pt-1 text-xs font-mono text-charcoal/75">
+                  <div className="flex justify-between py-1.5 border-b border-charcoal/10">
+                    <span className="text-charcoal/40 uppercase tracking-widest">{lang === "DE" ? "Mandat" : "Mandate"}</span>
+                    <span className="font-semibold text-charcoal">{lang === "DE" ? "Gesellschafterberatung" : "Shareholder Advisory"}</span>
+                  </div>
+                  <div className="flex justify-between py-1.5 border-b border-charcoal/10">
+                    <span className="text-charcoal/40 uppercase tracking-widest">{lang === "DE" ? "Bereich" : "Area"}</span>
+                    <span className="font-semibold text-charcoal">Corporate / M&A</span>
+                  </div>
+                  <div className="flex justify-between py-1.5">
+                    <span className="text-charcoal/40 uppercase tracking-widest">{lang === "DE" ? "Rolle" : "Role"}</span>
+                    <span className="font-semibold text-[#C0823E]">Lead Legal Counsel</span>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Closing Synthesis Statement & Section CTA */}
-          <div className="mt-16 sm:mt-20 pt-10 border-t border-charcoal/15 max-w-4xl space-y-6">
-            <p className="font-serif text-lg sm:text-xl md:text-2xl font-normal text-charcoal/90 leading-relaxed">
-              {lang === "DE"
-                ? "Die vier Bereiche greifen häufig ineinander. Eine Transaktion kann eine gesellschaftsrechtliche Neuordnung erfordern, ein Technologieprodukt von einem präzise gestalteten Vertrag abhängen und eine Gründerstruktur darüber entscheiden, ob eine spätere Finanzierung reibungslos möglich ist. Varda verbindet diese Fragen rund um die Entscheidung, die der Mandant tatsächlich treffen muss."
-                : "The four areas frequently overlap. A transaction may require corporate restructuring, a technology product may depend on a carefully designed contract, and a founder arrangement may determine whether a later financing can proceed smoothly. Varda connects these issues around the decision the client actually needs to make."}
-            </p>
-
-            <div className="pt-2">
-              <a
-                href="#so-arbeitet-varda"
-                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest font-bold text-charcoal hover:text-[#C0823E] border-b border-charcoal/40 hover:border-[#C0823E] pb-1 transition-colors"
-              >
-                <span>{lang === "DE" ? "Arbeitsweise von Varda ansehen" : "See how Varda works"}</span>
-                <span className="font-sans font-normal">→</span>
-              </a>
             </div>
+
+            {/* Right / Main Column (lg:col-span-7): Full Authentic Editorial Testimonial */}
+            <div className="lg:col-span-7 space-y-6 lg:pt-2">
+              <div className="border-l-2 border-[#C0823E] pl-6 sm:pl-8 lg:pl-10 space-y-6">
+                <blockquote className="space-y-5 sm:space-y-6 font-serif text-lg sm:text-xl lg:text-[21px] text-charcoal/90 leading-[1.65] font-normal tracking-tight max-w-2xl">
+                  <p>
+                    {lang === "DE"
+                      ? "„Wir haben unser erstes Unternehmen verkauft. Heißt: Vertragsentwurf der Gegenseite auf dem Tisch, jede Menge Paragrafen und eine ziemlich klare Ahnung davon, dass wir nicht wissen, was wir da eigentlich lesen."
+                      : "“We sold our first company. That means: draft contract from the other side on the table, countless clauses, and a fairly clear sense that we didn't really know what we were reading."}
+                  </p>
+                  <p>
+                    {lang === "DE"
+                      ? "Konstantin war ab dem ersten Call der Co-Pilot, den man in so einer Situation braucht. Er hat den Entwurf komplett überarbeitet zurückgegeben, verhandlungsfertig, statt uns eine Liste mit Anmerkungen zu schicken. Er hat uns vor Dingen gewarnt, auf die wir von allein nie gekommen wären. Und er hat seine Linie offengelegt, bevor er losgelaufen ist, so dass wir sie bestätigen (oder eben ändern) konnten."
+                      : "Konstantin was the co-pilot you need in such a situation right from the very first call. He returned the draft completely revised and negotiation-ready, rather than just sending us a list of comments. He warned us about things we would never have thought of on our own. And he laid out his strategy before proceeding, so that we could confirm (or adjust) it."}
+                  </p>
+                  <p>
+                    {lang === "DE"
+                      ? "Was mich am meisten überzeugt hat: Er hat auch die weichen und emotionalen Punkte ernst genommen und in klare Klauseln im Vertrag statt als Randnotiz verstanden."
+                      : "What convinced me most: He took the soft and emotional points seriously too, translating them into clear clauses in the contract rather than treating them as side notes."}
+                  </p>
+                  <p>
+                    {lang === "DE"
+                      ? "Bei den entscheidenden Punkten wussten wir immer, welche Optionen wir haben und was Konstantin uns empfiehlt. Entschieden haben am Ende wir, aber eben informiert statt geraten. Das hat die Verhandlungen für uns deutlich einfacher gemacht."
+                      : "When it came to the critical decisions, we always knew our options and what Konstantin recommended. In the end, we were the ones who decided, but informed rather than guessing. That made the negotiations significantly easier for us."}
+                  </p>
+                  <p>
+                    {lang === "DE"
+                      ? "Ich hatte während des ganzen Prozesses nie das Gefühl, allein im Cockpit zu sitzen. Und wir sind sauber gelandet.“"
+                      : "Throughout the entire process, I never felt like I was sitting alone in the cockpit. And we landed cleanly.”"}
+                  </p>
+                </blockquote>
+
+                {/* Attribution Area with Structural Placeholder */}
+                <div className="pt-4 border-t border-charcoal/10 space-y-1">
+                  <cite className="not-italic font-mono text-xs uppercase tracking-widest text-charcoal/70 font-semibold block">
+                    — {lang === "DE" ? "Gesellschafter, klima&so" : "Shareholders, klima&so"}
+                  </cite>
+                </div>
+              </div>
+            </div>
+
           </div>
         </section>
 
-        {/* SECTION 3: VARDA APPROACH / SO ARBEITET VARDA */}
-        <section id="methode" className="py-20 md:py-28 border-b border-charcoal/10 bg-white relative">
-          <div id="so-arbeitet-varda" className="scroll-mt-24" />
-          <div id="how-varda-works" className="scroll-mt-24" />
+        {/* =========================================================================
+            SECTION 3 — THREE MANDATE WORLDS
+            ========================================================================= */}
+        <section id="mandate" aria-labelledby="mandate-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-[#FAF8F4] relative">
+          <div id="startups-scaleups" className="scroll-mt-24" />
+          <div id="beratungsbereiche" className="scroll-mt-24" />
+          <div id="fokus" className="scroll-mt-24" />
 
           {/* Section Header */}
-          <div className="space-y-4 mb-16 max-w-4xl">
+          <div className="space-y-3 mb-12 md:mb-16 max-w-4xl">
+            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
+              <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
+              <span>/</span>
+              <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Mandate" : "Mandates"}</span>
+            </div>
+            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
+              02 / {lang === "DE" ? "MANDATSWELTEN" : "MANDATE WORLDS"}
+            </span>
+            <h2 id="mandate-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-charcoal leading-[1.12]">
+              {lang === "DE" ? "Wobei Varda unterstützt." : "Where Varda supports."}
+            </h2>
+          </div>
+
+          {/* 3 Mandate Worlds Editorial Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-stretch">
+            
+            {/* MANDATE WORLD 01: STARTUPS */}
+            <div className="border-t border-charcoal/25 pt-6 sm:pt-8 flex flex-col justify-between group transition-colors">
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between border-b border-charcoal/10 pb-3">
+                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
+                    01
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-medium">
+                    Startups
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug">
+                  Startups
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                  {lang === "DE"
+                    ? "Am Anfang geht es darum, die richtigen Dinge sauber zu regeln, ohne das Unternehmen mit Recht zu überfrachten. Varda berät Gründer und Startups bei Gesellschaftsstruktur, Founder Agreements, Finanzierungsrunden, Mitarbeiterbeteiligung und laufenden Gesellschafterfragen."
+                    : "In the early stages, it is about setting the right things up cleanly without overburdening the business with legal complexity. Varda advises founders and startups on corporate structure, founder agreements, financing rounds, employee participation and ongoing shareholder matters."}
+                </p>
+              </div>
+
+              {/* Service Line */}
+              <div className="pt-6 mt-8 border-t border-charcoal/15">
+                <p className="font-mono text-xs text-charcoal/70 tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Gründung · Founder Agreements · Finanzierung · VSOP / ESOP · Corporate & Governance"
+                    : "Formation · Founder Agreements · Financing · VSOP / ESOP · Corporate & Governance"}
+                </p>
+              </div>
+            </div>
+
+            {/* MANDATE WORLD 02: SCALE-UPS */}
+            <div className="border-t border-charcoal/25 pt-6 sm:pt-8 flex flex-col justify-between group transition-colors">
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between border-b border-charcoal/10 pb-3">
+                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
+                    02
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-medium">
+                    Scale-ups
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug">
+                  Scale-ups
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                  {lang === "DE"
+                    ? "Mit dem Wachstum werden Gesellschafterstrukturen, Governance und Verträge anspruchsvoller. Varda unterstützt bei Finanzierungen, Beteiligungs- und Holdingstrukturen, strategischen Verträgen und Transaktionen."
+                    : "With growth, shareholder structures, governance and contracts become more demanding. Varda supports in financing, shareholding and holding structures, strategic agreements and transactions."}
+                </p>
+              </div>
+
+              {/* Service Line */}
+              <div className="pt-6 mt-8 border-t border-charcoal/15">
+                <p className="font-mono text-xs text-charcoal/70 tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Corporate & Governance · Finanzierung · Beteiligungsstrukturen · Strategische Verträge · Transaktionen"
+                    : "Corporate & Governance · Financing · Shareholding Structures · Strategic Agreements · Transactions"}
+                </p>
+              </div>
+            </div>
+
+            {/* MANDATE WORLD 03: M&A / UNTERNEHMENSVERKAUF (Restrained Elevated Prominence) */}
+            <div className="border-t-2 border-[#C0823E] pt-6 sm:pt-8 flex flex-col justify-between relative group transition-colors">
+              <div id="unternehmensverkauf" className="scroll-mt-24" />
+              <div id="ma-mandat" className="scroll-mt-24" />
+              <div id="m-a" className="scroll-mt-24" />
+
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between border-b border-[#C0823E]/20 pb-3">
+                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
+                    03
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-semibold">
+                    [ {lang === "DE" ? "KERNBEREICH" : "CORE FOCUS"} ]
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl lg:text-[32px] font-medium text-charcoal leading-snug">
+                  {lang === "DE" ? "M&A / Unternehmensverkauf" : "M&A / Company Sale"}
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/90 leading-relaxed">
+                  {lang === "DE"
+                    ? "Wenn Sie ein Unternehmen kaufen oder verkaufen, sollten Sie bei den entscheidenden Punkten wissen, welche Optionen Sie haben und was wir empfehlen. Varda begleitet Gründer, Gesellschafter und Unternehmen von der Vorbereitung über Due Diligence und Vertragsverhandlung bis zu Signing und Closing."
+                    : "When buying or selling a company, you should know your options and what we recommend on the critical points. Varda guides founders, shareholders and companies from preparation through due diligence and contract negotiation to signing and closing."}
+                </p>
+              </div>
+
+              {/* Service Line */}
+              <div className="pt-6 mt-8 border-t border-[#C0823E]/30">
+                <p className="font-mono text-xs text-charcoal/85 font-medium tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Unternehmensverkauf · Unternehmenskauf · Founder Exit · Small Cap M&A"
+                    : "Company Sale · Company Acquisition · Founder Exit · Small Cap M&A"}
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION 4: CONSOLIDATED METHODOLOGY / SO ARBEITET VARDA
+            ========================================================================= */}
+        <section id="so-arbeitet-varda" aria-labelledby="methodology-heading" className="py-16 md:py-20 border-b border-charcoal/10 bg-white relative">
+          <div id="methode" className="scroll-mt-24" />
+          <div id="how-varda-works" className="scroll-mt-24" />
+          <div id="arbeitsweise" className="scroll-mt-24" />
+          <div id="beispiel-output" className="scroll-mt-24" />
+          <div id="what-you-get" className="scroll-mt-24" />
+
+          {/* Section Header */}
+          <div className="space-y-4 mb-12 md:mb-14 max-w-4xl">
             <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
               <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
               <span>/</span>
               <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Arbeitsweise" : "How Varda Works"}</span>
             </div>
-            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold">
-              02 / {lang === "DE" ? "SO ARBEITET VARDA" : "HOW VARDA WORKS"}
+            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
+              03 / {lang === "DE" ? "SO ARBEITET VARDA" : "HOW VARDA WORKS"}
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
-              {lang === "DE"
-                ? "Klare Rechtsberatung beginnt mit dem Verständnis der unternehmerischen Entscheidung."
-                : "Clear advice begins with understanding the business decision."}
+            <h2 id="methodology-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
+              {lang === "DE" ? "So arbeitet Varda." : "How Varda works."}
             </h2>
-            <p className="font-sans text-charcoal/80 text-base sm:text-lg leading-relaxed max-w-3xl pt-2">
+            <p className="font-sans text-base sm:text-lg text-charcoal/85 leading-relaxed max-w-3xl pt-1">
               {lang === "DE"
-                ? "Wir glauben, dass gute Rechtsberatung damit beginnt, das wirtschaftliche Ziel zu verstehen – und Ihnen dann dabei zu helfen, es zu erreichen."
-                : "We believe that good legal advice starts with understanding the commercial objective before helping you to get there."}
+                ? "Klare Rechtsberatung beginnt mit dem Verständnis der unternehmerischen Entscheidung. Erst dann geht es um die Rechtslage."
+                : "Clear legal advice begins with understanding the commercial decision. Only then does it turn to the legal framework."}
             </p>
           </div>
 
-          {/* Four Editorial Process Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 items-stretch">
+          {/* Four Steps Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 items-stretch">
             {[
               {
                 num: "01",
-                icon: <Target className="w-5 h-5 text-[#C0823E]" strokeWidth={1.5} />,
                 title: lang === "DE" ? "Das Ziel verstehen" : "Understand the objective",
-                text: lang === "DE"
-                  ? "Bevor rechtliche Fragen analysiert werden, identifiziert Varda das wirtschaftliche Ziel, die relevanten Beteiligten und die eigentliche Managemententscheidung."
-                  : "Before analysing legal rules, Varda identifies the commercial objective, the relevant stakeholders and the decision management actually needs to make."
+                body: lang === "DE"
+                  ? "Was soll am Ende erreicht sein? Welche wirtschaftlichen, strategischen oder persönlichen Punkte sind dabei wichtig?"
+                  : "What should be achieved in the end? Which commercial, strategic or personal priorities matter?"
               },
               {
                 num: "02",
-                icon: <Scale className="w-5 h-5 text-[#C0823E]" strokeWidth={1.5} />,
-                title: lang === "DE" ? "Rechtslage und wirtschaftlichen Kontext bewerten" : "Assess the legal and commercial position",
-                text: lang === "DE"
-                  ? "Rechtliche Risiken, wirtschaftliche Folgen, operative Realität und Umsetzbarkeit werden gemeinsam bewertet."
-                  : "Legal risks, commercial consequences, operational realities and implementation constraints are assessed together—not separately."
+                title: lang === "DE" ? "Rechtslage und Kontext bewerten" : "Assess legal framework and context",
+                body: lang === "DE"
+                  ? "Welche rechtlichen Themen sind für die Entscheidung tatsächlich relevant? Und welche nicht?"
+                  : "Which legal topics are genuinely relevant to the decision? And which are not?"
               },
               {
                 num: "03",
-                icon: <GitFork className="w-5 h-5 text-[#C0823E]" strokeWidth={1.5} />,
                 title: lang === "DE" ? "Realistische Optionen entwickeln" : "Develop realistic options",
-                text: lang === "DE"
-                  ? "Nicht jede rechtlich mögliche Lösung ist wirtschaftlich sinnvoll. Varda entwickelt realistische Handlungsoptionen und erklärt ihre Folgen."
-                  : "Not every legally possible solution is commercially sensible. Varda develops realistic alternatives and explains their consequences."
+                body: lang === "DE"
+                  ? "Welche Wege gibt es? Wo liegen die Unterschiede bei Risiko, Aufwand und Ergebnis?"
+                  : "What paths are available? Where do the differences lie in risk, effort and outcome?"
               },
               {
                 num: "04",
-                icon: <CheckCircle2 className="w-5 h-5 text-[#C0823E]" strokeWidth={1.5} />,
                 title: lang === "DE" ? "Den nächsten Schritt empfehlen" : "Recommend the next step",
-                text: lang === "DE"
-                  ? "Jedes Mandat endet mit einer Empfehlung, die sich praktisch umsetzen lässt."
-                  : "Every mandate concludes with a recommendation that management can actually implement."
+                body: lang === "DE"
+                  ? "Sie sollten wissen, was wir empfehlen, warum wir es empfehlen und was als Nächstes zu tun ist."
+                  : "You should know what we recommend, why we recommend it and what to do next."
               }
             ].map((step, idx) => (
               <div 
                 key={idx} 
-                className="border-t border-charcoal/20 pt-6 flex flex-col justify-between space-y-4 group hover:border-[#C0823E] transition-colors duration-300"
+                className="border-t border-charcoal/25 pt-6 flex flex-col justify-start space-y-3.5 group hover:border-[#C0823E] transition-colors duration-300"
               >
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="font-mono text-xs font-bold text-[#C0823E] uppercase tracking-wider">
-                      {step.num}
-                    </span>
-                    <div className="p-1.5 bg-[#FAF8F4] border border-charcoal/10">
-                      {step.icon}
-                    </div>
-                  </div>
-                  <h3 className="font-serif text-xl font-medium text-charcoal leading-snug">
-                    {step.title}
-                  </h3>
-                  <p className="font-sans text-xs sm:text-sm text-charcoal/75 leading-relaxed">
-                    {step.text}
-                  </p>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest uppercase">
+                    {step.num}
+                  </span>
                 </div>
+                <h3 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug">
+                  {step.title}
+                </h3>
+                <p className="font-sans text-sm sm:text-[15px] text-charcoal/80 leading-relaxed pt-1">
+                  {step.body}
+                </p>
               </div>
             ))}
           </div>
-
-          {/* Continuous Thin Divider */}
-          <div className="w-full h-[1px] bg-charcoal/15 my-14 sm:my-18" />
-
-          {/* Supporting Observation (Memorable Serif Quote) */}
-          <div className="max-w-4xl py-2 my-2">
-            <p className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-charcoal leading-[1.25]">
-              {lang === "DE"
-                ? "Gute Rechtsberatung bedeutet: eine klare Empfehlung und eine To-do-Liste."
-                : "Good legal advice means a clear recommendation and a to-do list."}
-            </p>
-          </div>
-
-          {/* What Varda Does Not Do — Restrained Comparison */}
-          <div className="mt-14 pt-10 border-t border-charcoal/15 space-y-6">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-semibold">
-              [ {lang === "DE" ? "DIFFERENZIERUNG IM ANSATZ" : "DISTINCTION IN APPROACH"} ]
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-stretch">
-              {/* Left Column: Traditional Legal Advice */}
-              <div className="border border-charcoal/15 bg-[#FAF8F4] p-6 sm:p-8 space-y-5">
-                <div className="font-mono text-xs font-bold text-charcoal/50 uppercase tracking-wider pb-3 border-b border-charcoal/10">
-                  {lang === "DE" ? "Klassische Rechtsberatung" : "Traditional legal advice"}
-                </div>
-                <ul className="space-y-3.5 font-sans text-xs sm:text-sm text-charcoal/70">
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-charcoal/30 flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Lange Memos" : "Long memo"}</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-charcoal/30 flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Jedes Risiko wird gleich gewichtet" : "Every risk receives equal attention"}</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-charcoal/30 flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Empfehlung bleibt oft offen" : "Recommendation often remains open"}</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Right Column: Varda */}
-              <div className="border border-[#C0823E]/40 bg-white p-6 sm:p-8 space-y-5 shadow-2xs">
-                <div className="font-mono text-xs font-bold text-[#C0823E] uppercase tracking-wider pb-3 border-b border-charcoal/10 flex justify-between items-center">
-                  <span>Varda</span>
-                  <span className="text-[9px] bg-[#C0823E]/10 text-[#C0823E] px-2 py-0.5 font-mono uppercase tracking-widest font-semibold">
-                    {lang === "DE" ? "FOKUS" : "FOCUS"}
-                  </span>
-                </div>
-                <ul className="space-y-3.5 font-sans text-xs sm:text-sm text-charcoal/90 font-medium">
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C0823E] flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Entscheidungsorientiert" : "Decision-oriented"}</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C0823E] flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Wirtschaftliche Priorisierung" : "Commercial prioritisation"}</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C0823E] flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Klare Empfehlung" : "Clear recommendation"}</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C0823E] flex-shrink-0 mt-1.5" />
-                    <span>{lang === "DE" ? "Konkreter nächster Schritt" : "Concrete next step"}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Section CTA Leading into About Varda */}
-          <div className="mt-14 pt-8 border-t border-charcoal/15">
-            <a
-              href="#wir"
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest font-bold text-charcoal hover:text-[#C0823E] border-b border-charcoal/40 hover:border-[#C0823E] pb-1 transition-colors"
-            >
-              <span>{lang === "DE" ? "Über Dr. Konstantin Filbinger" : "About Dr. Konstantin Filbinger"}</span>
-              <span className="font-sans font-normal">→</span>
-            </a>
-          </div>
         </section>
 
-        {/* SECTION 4: WHAT YOU GET / WAS SIE BEKOMMEN */}
-        <section id="beispiel-output" className="py-20 md:py-28 border-b border-charcoal/10 bg-[#FAF8F4] relative">
-          <div id="what-you-get" className="scroll-mt-24" />
-          <div className="mx-auto max-w-7xl px-4 md:px-8">
+        {/* =========================================================================
+            SECTION 5: MANIFESTO / RECHT IST KEINE RAKETENWISSENSCHAFT
+            ========================================================================= */}
+        <section id="manifest" aria-labelledby="manifesto-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-[#FAF8F4] relative">
+          <div id="philosophie" className="scroll-mt-24" />
+          <div id="haltung" className="scroll-mt-24" />
+          <div id="point-of-view" className="scroll-mt-24" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             
-            {/* Section Header */}
-            <div className="space-y-4 mb-12 sm:mb-16 max-w-3xl">
-              <div className="flex items-center gap-2 font-mono text-[10px] sm:text-xs text-[#C0823E] font-bold uppercase tracking-widest">
-                <span className="w-1.5 h-1.5 bg-[#C0823E] rounded-full" />
-                <span>04 / {lang === "DE" ? "WAS SIE BEKOMMEN" : "WHAT YOU GET"}</span>
+            {/* Left Column: Headline & Breadcrumb / Categorization (lg:col-span-5) */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
+                <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
+                <span>/</span>
+                <span className="text-[#C0823E] font-semibold">
+                  {lang === "DE" ? "Manifest" : "Manifesto"}
+                </span>
               </div>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
-                {lang === "DE" 
-                  ? "Sie sollten wissen, was als Nächstes zu tun ist." 
-                  : "You should know what to do next."}
-              </h2>
-              <p className="font-sans text-charcoal/80 text-base sm:text-lg leading-relaxed pt-2">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
+                04 / {lang === "DE" ? "HALTUNG" : "POINT OF VIEW"}
+              </span>
+              <h2 id="manifesto-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.14]">
                 {lang === "DE"
-                  ? "Gute Rechtsberatung sollte die nächste Entscheidung erleichtern. Varda verdichtet die relevanten rechtlichen, wirtschaftlichen und operativen Erwägungen zu einer klaren Empfehlung und einem konkreten nächsten Schritt."
-                  : "Good legal advice should make the next decision easier. Varda reduces the relevant legal, commercial and operational considerations to a clear recommendation and concrete next step."}
+                  ? "Recht ist keine Raketenwissenschaft. Tun wir nicht so, als wäre es eine."
+                  : "Law is not rocket science. Let's not pretend it is."}
+              </h2>
+            </div>
+
+            {/* Right Column: Editorial Manifesto Text (lg:col-span-7) */}
+            <div className="lg:col-span-7 space-y-6 text-charcoal/85 font-sans text-base sm:text-lg leading-relaxed lg:pt-8">
+              <p>
+                {lang === "DE"
+                  ? "Sie haben ein Ziel. Ein rechtliches Thema macht den Weg dorthin komplizierter."
+                  : "You have a goal. A legal issue makes the path there more complicated."}
+              </p>
+              <p>
+                {lang === "DE"
+                  ? "Gute Rechtsberatung sollte diese Komplexität reduzieren, nicht vergrößern. Sie sollte Ihnen helfen, eine fundierte Entscheidung zu treffen und weiterzumachen – ohne unnötiges Zögern, „es kommt darauf an“-Vorbehalte oder juristischen Chichi."
+                  : "Good legal advice should reduce that complexity, not increase it. It should help you make an informed decision and move forward – without unnecessary hesitation, \"it depends\" caveats or legalese."}
+              </p>
+              <p className="pt-4 border-t border-charcoal/10 text-charcoal font-medium">
+                {lang === "DE"
+                  ? "Rechtsberatung funktioniert für uns nur dann, wenn sie den wirtschaftlichen, operativen und strategischen Kontext mitdenkt. Sonst sind es nur Worte."
+                  : "For us, legal advice only works when it takes the commercial, operational and strategic context into account. Otherwise, it is just words."}
               </p>
             </div>
 
-            {/* Restrained Editorial Decision Example */}
-            <div className="max-w-4xl border border-charcoal/15 bg-white p-6 sm:p-10 md:p-12 shadow-2xs">
-              
-              {/* 1. RECOMMENDATION */}
-              <div className="space-y-3 pb-8 border-b border-charcoal/15">
-                <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                  {lang === "DE" ? "EMPFEHLUNG" : "RECOMMENDATION"}
-                </span>
-                <p className="font-serif text-xl sm:text-2xl md:text-3xl font-medium text-charcoal leading-snug">
-                  {lang === "DE"
-                    ? "Option B umsetzen. Verbleibendes rechtliches Risiko akzeptieren, aber vor der Unterzeichnung operativ absichern."
-                    : "Proceed with Option B. Accept the remaining legal risk, but address it operationally before signing."}
-                </p>
-              </div>
-
-              {/* 2. WHY */}
-              <div className="space-y-3 py-8 border-b border-charcoal/15">
-                <span className="font-mono text-xs uppercase tracking-widest text-charcoal/50 font-bold block">
-                  {lang === "DE" ? "WARUM" : "WHY"}
-                </span>
-                <p className="font-sans text-base sm:text-lg text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Option A würde das rechtliche Risiko weiter reduzieren, aber die Umsetzung verzögern und unverhältnismäßige wirtschaftliche Kosten verursachen."
-                    : "Option A reduces legal exposure further, but would delay implementation and create disproportionate commercial cost."}
-                </p>
-              </div>
-
-              {/* 3. NEXT STEP */}
-              <div className="space-y-3 pt-8">
-                <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                  {lang === "DE" ? "NÄCHSTER SCHRITT" : "NEXT STEP"}
-                </span>
-                <p className="font-sans text-base sm:text-lg font-semibold text-charcoal leading-relaxed">
-                  {lang === "DE"
-                    ? "Die zwei kritischen Klauseln anpassen, die operative Schutzmaßnahme bestätigen und zur Unterschrift übergehen."
-                    : "Amend the two critical clauses, confirm the operational safeguard and proceed to signature."}
-                </p>
-              </div>
-
-            </div>
-
           </div>
         </section>
 
-        {/* SECTION 5: KONSTANTIN FILBINGER */}
-        <section id="wir" className="py-20 md:py-28 border-b border-charcoal/10 bg-white relative">
+        {/* =========================================================================
+            SECTION 6: ABOUT DR. KONSTANTIN FILBINGER
+            ========================================================================= */}
+        <section id="konstantin" aria-labelledby="konstantin-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-white relative">
+          <div id="wir" className="scroll-mt-24" />
           <div id="uber-varda" className="scroll-mt-24" />
           <div id="about" className="scroll-mt-24" />
 
-          {/* Understated Section Header */}
-          <div className="space-y-4 mb-16 max-w-4xl">
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
-              <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
-              <span>/</span>
-              <span className="text-[#C0823E] font-semibold">
-                {lang === "DE" ? "Über Varda" : "About"}
-              </span>
-            </div>
-            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold">
-              05 / {lang === "DE" ? "ÜBER VARDA" : "ABOUT"}
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
-              {lang === "DE"
-                ? "Recht ist keine Raketenwissenschaft. Tun wir nicht so, als wäre es eine."
-                : "Legal is not rocket science. Let's not pretend it is."}
-            </h2>
-          </div>
-
-          {/* Asymmetrical Editorial Grid: Left Portrait (~35-40%), Right Text (~60-65%) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Asymmetrical Editorial Grid: Left Portrait (lg:col-span-5), Right Content (lg:col-span-7) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             
             {/* Left Column: Natural, approachable portrait (lg:col-span-5) */}
-            <div className="lg:col-span-5 space-y-4">
+            <div className="lg:col-span-5 space-y-3">
               <div className="bg-[#FAF8F4] border border-charcoal/15 p-2 sm:p-3 overflow-hidden">
                 <div className="relative w-full aspect-[3/4] bg-stone-100 overflow-hidden">
                   <img
@@ -2336,134 +2226,72 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right Column: Editorial Text & Philosophy (lg:col-span-7) */}
-            <div className="lg:col-span-7 space-y-10">
+            {/* Right Column: Editorial Biography & Credentials (lg:col-span-7) */}
+            <div className="lg:col-span-7 space-y-6">
               
-              {/* Opening Block: Positioning First */}
-              <div className="space-y-4 text-charcoal/85 font-sans text-base sm:text-lg leading-relaxed">
-                <p>
-                  {lang === "DE"
-                    ? "Sie haben ein Ziel. Ein rechtliches Thema macht den Weg komplizierter. Wir reduzieren die Komplexität, helfen Ihnen, eine fundierte Entscheidung zu treffen, und bringen Sie weiter – ohne Zögern, endlose „Es kommt darauf an“-Vorbehalte oder juristisches Chichi."
-                    : "You have a goal. A legal issue adds complexity. We remove that complexity, help you make a sound decision and keep you moving — without hesitation, endless \"it depends\" caveats or legalese for its own sake."}
-                </p>
-                <p className="font-medium text-charcoal">
-                  {lang === "DE"
-                    ? "Rechtsberatung gehört für uns in ihren wirtschaftlichen, operativen und strategischen Kontext. Sonst bleiben nur Worte ohne Mehrwert."
-                    : "We believe legal advice should be embedded in its commercial, operational and strategic context. Otherwise, it is just words with no added value."}
-                </p>
-              </div>
-
-              <div className="w-full h-[1px] bg-charcoal/10" />
-
-              {/* Second Block: Introducing Konstantin */}
-              <div className="space-y-4 font-sans text-sm sm:text-base text-charcoal/85 leading-relaxed">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
-                  [ {lang === "DE" ? "DIE KANZLEI" : "THE PRACTICE"} ]
-                </span>
-                <p>
-                  {lang === "DE"
-                    ? "Ich habe in den Corporate/M&A-Teams mehrerer führender internationaler und deutscher Wirtschaftskanzleien gearbeitet. Über Branchen, Unternehmensgrößen und ganz unterschiedliche Mandate hinweg habe ich dabei vor allem eines über gute Rechtsberatung gelernt:"
-                    : "I have worked in the Corporate/M&A teams of several leading international and German law firms. Across industries, company sizes and types of matters, I have learned one thing about good legal advice:"}
-                </p>
-                <p>
-                  {lang === "DE"
-                    ? "Sie haben ein Ziel. Ein rechtliches Thema macht den Weg komplizierter. Gute Rechtsberatung sollte diese Komplexität reduzieren, Ihnen die Klarheit für eine fundierte und sichere Entscheidung geben und dafür sorgen, dass Sie ohne unnötige Reibung zügig weiterkommen. Ohne Zögern, endlose „Es kommt darauf an“-Vorbehalte oder juristisches Chichi."
-                    : "You have a goal. A legal issue adds complexity. Good legal advice should remove that complexity, give you the clarity to make a sound decision with confidence and keep you moving — quickly and without unnecessary friction. No hesitation, endless “it depends” caveats or legalese for its own sake."}
-                </p>
-              </div>
-
-              <div className="w-full h-[1px] bg-charcoal/10" />
-
-              {/* Four Editorial Principles */}
-              <div className="space-y-6">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
-                  [ {lang === "DE" ? "PRINZIPIEN" : "PRINCIPLES"} ]
-                </span>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Principle 1 */}
-                  <div className="space-y-1.5 border-l border-charcoal/15 pl-4 py-1">
-                    <h4 className="font-serif text-lg font-semibold text-charcoal">
-                      {lang === "DE" ? "Wirtschaftliches Verständnis" : "Commercial understanding"}
-                    </h4>
-                    <p className="font-sans text-xs sm:text-sm text-charcoal/75 leading-relaxed">
-                      {lang === "DE"
-                        ? "Rechtsberatung muss zum Geschäft passen – nicht umgekehrt."
-                        : "Legal advice should fit the business—not the other way around."}
-                    </p>
-                  </div>
-
-                  {/* Principle 2 */}
-                  <div className="space-y-1.5 border-l border-charcoal/15 pl-4 py-1">
-                    <h4 className="font-serif text-lg font-semibold text-charcoal">
-                      {lang === "DE" ? "Klarheit" : "Clarity"}
-                    </h4>
-                    <p className="font-sans text-xs sm:text-sm text-charcoal/75 leading-relaxed">
-                      {lang === "DE"
-                        ? "Komplexe Themen sind erst dann hilfreich, wenn sie verständlich werden."
-                        : "Complex issues become useful only when they become understandable."}
-                    </p>
-                  </div>
-
-                  {/* Principle 3 */}
-                  <div className="space-y-1.5 border-l border-charcoal/15 pl-4 py-1">
-                    <h4 className="font-serif text-lg font-semibold text-charcoal">
-                      {lang === "DE" ? "Urteilsvermögen" : "Judgment"}
-                    </h4>
-                    <p className="font-sans text-xs sm:text-sm text-charcoal/75 leading-relaxed">
-                      {lang === "DE"
-                        ? "Nicht jede rechtlich mögliche Lösung ist auch die beste unternehmerische Entscheidung."
-                        : "Not every legal possibility is a good business decision."}
-                    </p>
-                  </div>
-
-                  {/* Principle 4 */}
-                  <div className="space-y-1.5 border-l border-charcoal/15 pl-4 py-1">
-                    <h4 className="font-serif text-lg font-semibold text-charcoal">
-                      {lang === "DE" ? "Zusammenarbeit" : "Collaboration"}
-                    </h4>
-                    <p className="font-sans text-xs sm:text-sm text-charcoal/75 leading-relaxed">
-                      {lang === "DE"
-                        ? "Die beste Beratung entsteht gemeinsam mit dem Mandanten – nicht aus der Distanz."
-                        : "The best advice is developed together with the client—not delivered from a distance."}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full h-[1px] bg-charcoal/10" />
-
-              {/* Personal Note */}
-              <div className="border-l-2 border-[#C0823E] pl-5 py-2 bg-[#FAF8F4]/60 space-y-2">
-                <p className="font-serif italic text-base sm:text-lg text-charcoal/90 leading-relaxed">
-                  {lang === "DE"
-                    ? "„Ich arbeite besonders gerne mit Gründerinnen, Gründern und Geschäftsleitungen zusammen, weil ihre Fragestellungen selten sauber in juristische Kategorien passen. Genau dort entstehen oft die spannendsten Lösungen.“"
-                    : "“I enjoy working with founders and management teams because their questions rarely fit neatly into legal categories. Those conversations are often where the most interesting solutions emerge.”"}
-                </p>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
-                  — Dr. Konstantin Filbinger
-                </span>
-              </div>
-
-              <div className="w-full h-[1px] bg-charcoal/10" />
-
-              {/* Restrained Credentials */}
+              {/* Header Elements */}
               <div className="space-y-3">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-bold block">
-                  [ {lang === "DE" ? "QUALIFIKATION & STATUSTITEL" : "CREDENTIALS"} ]
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
+                  <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
+                  <span>/</span>
+                  <span className="text-[#C0823E] font-semibold">
+                    {lang === "DE" ? "Über Konstantin" : "About Konstantin"}
+                  </span>
+                </div>
+                <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
+                  05 / KONSTANTIN
                 </span>
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs text-charcoal/75 uppercase tracking-wider">
+                <h2 id="konstantin-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
+                  Dr. Konstantin Filbinger
+                </h2>
+              </div>
+
+              {/* Exact Body Copy */}
+              <div className="space-y-4 font-sans text-base sm:text-lg text-charcoal/85 leading-relaxed pt-1">
+                <p>
+                  {lang === "DE"
+                    ? "Ich habe in Corporate/M&A-Teams renommierter internationaler und deutscher Wirtschaftskanzleien gearbeitet. Heute berate ich mit Varda Gründer, Gesellschafter und Unternehmen bei Corporate-Themen und M&A – von der Strukturierung und Finanzierung bis zum Unternehmenskauf oder -verkauf."
+                    : "I have worked in Corporate/M&A teams of renowned international and German commercial law firms. Today, through Varda, I advise founders, shareholders and companies on corporate matters and M&A – from structuring and financing to company purchases or sales."}
+                </p>
+                <p>
+                  {lang === "DE"
+                    ? "Bei Varda arbeite ich direkt mit meinen Mandanten. Mir ist wichtig, dass Sie bei den entscheidenden Punkten wissen, welche Optionen Sie haben, wie ich sie einschätze und was ich Ihnen empfehle. Die Entscheidung bleibt bei Ihnen – aber Sie sollten sie nicht auf Basis von Vermutungen treffen müssen."
+                    : "At Varda, I work directly with my clients. It is important to me that on the critical points, you know what options you have, how I assess them and what I recommend to you. The decision remains yours – but you should not have to make it based on assumptions."}
+                </p>
+              </div>
+
+              {/* Fine Divider */}
+              <div className="w-full h-[1px] bg-charcoal/10 my-4" />
+
+              {/* Teaching Credential - Restrained Credibility Signal */}
+              <div className="border-l-2 border-[#C0823E] pl-4 py-2 bg-[#FAF8F4]/80 space-y-1">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
+                  [ {lang === "DE" ? "LEHRAUFTRAG" : "TEACHING"} ]
+                </span>
+                <p className="font-sans text-xs sm:text-sm text-charcoal/85 leading-relaxed font-medium">
+                  {lang === "DE"
+                    ? "Ich unterrichte am Berlin College of Business and Technology International Corporate and Tax Law und Private Law."
+                    : "I teach International Corporate and Tax Law and Private Law at the Berlin College of Business and Technology."}
+                </p>
+              </div>
+
+              {/* Compact Core Credentials */}
+              <div className="space-y-2 pt-2">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-bold block">
+                  [ {lang === "DE" ? "FOKUS & QUALIFIKATION" : "FOCUS & CREDENTIALS"} ]
+                </span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs text-charcoal/75 uppercase tracking-wider">
                   <span>Rechtsanwalt (Germany)</span>
                   <span className="text-charcoal/30">•</span>
                   <span>Founder, Varda Legal</span>
                   <span className="text-charcoal/30">•</span>
-                  <span>Corporate · Commercial · M&A · Technology</span>
+                  <span>Corporate & M&A</span>
                   <span className="text-charcoal/30">•</span>
                   <span>Based in Munich</span>
                 </div>
               </div>
 
-              {/* Calm Invitation / CTA */}
+              {/* Calm Invitation / Direct Consultation */}
               <div className="pt-6 border-t border-charcoal/15 space-y-4">
                 <p className="font-serif text-lg sm:text-xl text-charcoal">
                   {lang === "DE"
@@ -2485,8 +2313,9 @@ export default function App() {
           </div>
         </section>
 
-        {/* SECTION 6: CONTACT */}
+        {/* SECTION 7: CONTACT */}
         <section id="letsgo" className="py-16 md:py-24">
+          <div id="kontakt" className="scroll-mt-24" />
           <div className="space-y-4 mb-12">
             <span className="font-mono text-xs uppercase tracking-widest text-brand-red">06 / {d.letsgo.title}</span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal">{d.letsgo.subtitle}</h2>
@@ -2563,25 +2392,6 @@ export default function App() {
 
           </div>
         </section>
-
-        
-        {/* Relocated Noble Navigation Visual Showcase to the bottom of main */}
-        <div className="mt-16 sm:mt-24 mb-16 border border-charcoal/15 bg-[#faf8f4] p-4 md:p-6 shadow-sm">
-          {/* The Static Navigation Image in full size, uncropped, clean display */}
-          <img 
-            src={lang === "DE" ? vardalegalEndframe : vardalegalEndframeEng}
-            alt="Strategic Navigation and Precision - Varda Legal"
-            referrerPolicy="no-referrer"
-            className="w-full h-auto block rounded shadow border border-charcoal/10"
-          />
-
-          {/* Sovereign, reduced professional slide footer */}
-          <div className="mt-6 pt-3 border-t border-charcoal/10 text-center">
-            <span className="font-mono text-[9px] uppercase tracking-widest text-charcoal/40 block leading-relaxed">
-              Varda Legal | Dr. Konstantin Filbinger | Rechtsanwalt für Gesellschaftsrecht, Vertragsrecht, M&A und Tech | München
-            </span>
-          </div>
-        </div>
         
         </>
         )}
@@ -2598,8 +2408,8 @@ export default function App() {
               <div className="font-display font-bold text-sm tracking-wider uppercase text-charcoal">VARDA LEGAL</div>
               <p className="text-xs text-charcoal/65 leading-relaxed font-sans">
                 {lang === "DE" 
-                  ? "Rechtsanwalt Dr. Konstantin Filbinger • Corporate, Commercial, M&A und Tech." 
-                  : "Dr. Konstantin Filbinger • Corporate, Commercial, M&A and Tech counsel."}
+                  ? "Rechtsanwalt Dr. Konstantin Filbinger · Corporate & M&A für Gründer und Wachstumsunternehmen." 
+                  : "Dr. Konstantin Filbinger · Corporate & M&A for founders and growth companies."}
               </p>
               {/* Languages switch */}
               <div className="pt-2 flex items-center space-x-3 font-mono text-xs">
@@ -2626,10 +2436,10 @@ export default function App() {
                 {lang === "DE" ? "Navigation" : "Navigation"}
               </div>
               <ul className="space-y-2 font-sans text-xs">
-                <li><a href="#fokus" className="hover:text-brand-red transition-all">{lang === "DE" ? "Expertise" : "Expertise"}</a></li>
-                <li><a href="#methode" className="hover:text-brand-red transition-all">{lang === "DE" ? "Varda-Ansatz" : "Varda Approach"}</a></li>
-                <li><a href="#beispiel-output" className="hover:text-brand-red transition-all">{lang === "DE" ? "Was Sie bekommen" : "What You Get"}</a></li>
-                <li><a href="#wir" className="hover:text-brand-red transition-all">{lang === "DE" ? "Über Dr. Konstantin Filbinger" : "About Dr. Konstantin Filbinger"}</a></li>
+                <li><a href="#ma" className="hover:text-brand-red transition-all">M&A</a></li>
+                <li><a href="#startups-scaleups" className="hover:text-brand-red transition-all">Startups & Scale-ups</a></li>
+                <li><a href="#so-arbeitet-varda" className="hover:text-brand-red transition-all">{lang === "DE" ? "So arbeitet Varda" : "How Varda Works"}</a></li>
+                <li><a href="#konstantin" className="hover:text-brand-red transition-all">Konstantin</a></li>
                 <li><a href="#letsgo" className="hover:text-brand-red transition-all">{lang === "DE" ? "Kontakt" : "Contact"}</a></li>
                 <li><a href={lang === "DE" ? "#navigator" : "#en/navigator"} onClick={() => setCurrentView("navigator")} className="hover:text-brand-red transition-all font-semibold text-[#C0823E]">Navigator</a></li>
               </ul>

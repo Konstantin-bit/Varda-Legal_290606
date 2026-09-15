@@ -1,6 +1,6 @@
 {
   "name": "Varda Legal",
-  "description": "A highly modern, tech-forward boutique corporate and commercial law firm website in Munich styled in minimalist, grid-centric Varda aesthetics.",
+  "description": "Varda Legal berät Gründer, Startups, Scale-ups und Gesellschafter bei Corporate-Themen, Finanzierungen, Unternehmenskäufen und Unternehmensverkäufen.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

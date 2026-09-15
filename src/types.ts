@@ -142,7 +142,7 @@ export const content: Record<Language, ContentData> = {
       fff: "Form follows function",
     },
     hero: {
-      badge: "CORPORATE · COMMERCIAL · M&A · TECHNOLOGIE",
+      badge: "CORPORATE & M&A · STARTUPS · SCALE-UPS",
       title: "Rechtsberatung, die Sie über die Ziellinie bringt.",
       subtitle: "Klarheit. Sicherheit. Ruhe.",
       directSentence: "Sie arbeiten direkt mit Dr. Konstantin Filbinger. Er bewertet die Rechtslage im wirtschaftlichen Kontext und empfiehlt einen umsetzbaren nächsten Schritt.",
@@ -167,7 +167,7 @@ export const content: Record<Language, ContentData> = {
       card: {
         role: "Gründer",
         school: "",
-        focus: "Corporate, Commercial, M&A, Tech/Data",
+        focus: "Corporate & M&A",
       },
     },
     fokus: {
@@ -707,7 +707,7 @@ Token-Recovery-Probleme aufgrund Überweisungen an eine Wallet, deren Schlüssel
       fff: "Form follows function",
     },
     hero: {
-      badge: "CORPORATE · COMMERCIAL · M&A · TECHNOLOGY",
+      badge: "CORPORATE & M&A · STARTUPS · SCALE-UPS",
       title: "Legal advice that gets you across the line.",
       subtitle: "Clarity. Confidence. Calm.",
       directSentence: "You work directly with Dr Konstantin Filbinger, who assesses the legal position in its commercial context and recommends a workable next step.",
@@ -732,7 +732,7 @@ Token-Recovery-Probleme aufgrund Überweisungen an eine Wallet, deren Schlüssel
       card: {
         role: "Founder",
         school: "",
-        focus: "Corporate, Commercial, M&A, Tech/Data",
+        focus: "Corporate & M&A",
       },
     },
     fokus: {
