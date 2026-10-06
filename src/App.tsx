@@ -979,6 +979,9 @@ export default function App() {
           "#ma",
           "#transaktion",
           "#selected-deal",
+          "#selected-experience",
+          "#erfahrung",
+          "#experience",
           "#startups-scaleups",
           "#mandate",
           "#so-arbeitet-varda",
@@ -1098,6 +1101,18 @@ export default function App() {
           "@type": "Person",
           "name": "Dr. Konstantin Filbinger",
           "jobTitle": "Rechtsanwalt",
+          "description": lang === "DE"
+            ? "Rechtsanwalt und Gründer von Varda Legal. Beratung von Gründern, Gesellschaftern und Unternehmen bei Corporate-Themen und M&A (u.a. Verkauf von klima&so an PYURE). Vor der Gründung von Varda Beratung an komplexen gesellschaftsrechtlichen Mandaten, M&A-Transaktionen und strategischen Technologieprojekten in internationalen Wirtschaftskanzleien (u.a. als Mitglied der Ashurst-Teams bei Transaktionen für Siemens Energy und FNZ sowie beim Governance- und Vertragsrahmen für Catena-X)."
+            : "German Attorney-at-Law (Rechtsanwalt) and Founder of Varda Legal. Advises founders, shareholders and companies on corporate matters and M&A (including the sale of klima&so to PYURE). Prior to founding Varda, advised on complex corporate matters, M&A transactions and strategic technology projects at international law firms (including as part of Ashurst teams on transactions for Siemens Energy and FNZ and on the governance and contractual framework for Catena-X).",
+          "knowsAbout": [
+            "Corporate & M&A",
+            "Sell-Side M&A",
+            "Buy-Side M&A",
+            "Corporate Governance",
+            "Data Governance & Digital Contracting",
+            "International Corporate and Tax Law",
+            "Private Law"
+          ],
           "hasCredential": [
             {
               "@type": "EducationalOccupationalCredential",
@@ -1850,7 +1865,7 @@ export default function App() {
                   <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Transaktion" : "Transaction"}</span>
                 </div>
                 <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                  {lang === "DE" ? "AUSGEWÄHLTE TRANSAKTION" : "SELECTED TRANSACTION"}
+                  01 / {lang === "DE" ? "AUSGEWÄHLTE TRANSAKTION" : "SELECTED TRANSACTION"}
                 </span>
               </div>
 
@@ -1933,6 +1948,198 @@ export default function App() {
         </section>
 
         {/* =========================================================================
+            SECTION 2B — SELECTED EXPERIENCE / AUSGEWÄHLTE ERFAHRUNG
+            ========================================================================= */}
+        <section id="selected-experience" aria-labelledby="selected-experience-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-[#FAF8F4] relative">
+          <div id="erfahrung" className="scroll-mt-24" />
+          <div id="experience" className="scroll-mt-24" />
+
+          {/* Section Header */}
+          <div className="space-y-4 mb-12 md:mb-16 max-w-4xl">
+            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
+              <a href="#home" className="hover:text-charcoal transition-colors">Home</a>
+              <span>/</span>
+              <span className="text-[#C0823E] font-semibold">
+                {lang === "DE" ? "Ausgewählte Erfahrung" : "Selected Experience"}
+              </span>
+            </div>
+            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
+              {lang === "DE" ? "02 / AUSGEWÄHLTE ERFAHRUNG" : "02 / SELECTED EXPERIENCE"}
+            </span>
+            <h2 id="selected-experience-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
+              {lang === "DE" ? (
+                <>
+                  Varda ist eine junge Kanzlei.
+                  <br className="hidden sm:inline" /> Die Erfahrung dahinter ist es nicht.
+                </>
+              ) : (
+                <>
+                  Varda is a young firm.
+                  <br className="hidden sm:inline" /> The experience behind it isn’t.
+                </>
+              )}
+            </h2>
+            <p className="font-sans text-base sm:text-lg text-charcoal/85 leading-relaxed max-w-3xl pt-1">
+              {lang === "DE"
+                ? "Vor der Gründung von Varda hat Konstantin als Teil internationaler Kanzleiteams an komplexen M&A-Transaktionen und strategischen Technologieprojekten beraten. Die nachstehenden Mandate zeigen eine Auswahl dieser früheren Erfahrung."
+                : "Before founding Varda, Konstantin advised on complex M&A transactions and strategic technology projects as part of international law firm teams. The matters below are a selection of that prior experience."}
+            </p>
+          </div>
+
+          {/* 2 x 2 Editorial Grid on Desktop, Stacked Vertically on Mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-10 md:gap-y-12 items-stretch">
+            
+            {/* CASE 01: Siemens Energy -> Triton */}
+            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
+              <div className="space-y-3.5">
+                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
+                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
+                    {lang === "DE" ? "01 / FRÜHERE ERFAHRUNG" : "01 / PRIOR EXPERIENCE"}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
+                    SELL-SIDE · CORPORATE / M&A
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
+                  Siemens Energy <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Triton
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                  {lang === "DE"
+                    ? "Veräußerung des BIC- / Trench-Geschäfts"
+                    : "Sale of the BIC / Trench business"}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-charcoal/10">
+                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst vor Gründung von Varda."
+                    : "Advised as part of the Ashurst Corporate/M&A team before founding Varda."}
+                </p>
+              </div>
+            </div>
+
+            {/* CASE 02: Siemens Energy -> Mutares */}
+            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
+              <div className="space-y-3.5">
+                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
+                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
+                    {lang === "DE" ? "02 / FRÜHERE ERFAHRUNG" : "02 / PRIOR EXPERIENCE"}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
+                    SELL-SIDE · CORPORATE / M&A
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
+                  Siemens Energy <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Mutares
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                  {lang === "DE"
+                    ? "Veräußerung des Geschäftsbereichs Heat Transfer Technology"
+                    : "Sale of the Heat Transfer Technology business"}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-charcoal/10">
+                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst vor Gründung von Varda."
+                    : "Advised as part of the Ashurst Corporate/M&A team before founding Varda."}
+                </p>
+              </div>
+            </div>
+
+            {/* CASE 03: FNZ -> Fondsdepot Bank */}
+            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
+              <div className="space-y-3.5">
+                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
+                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
+                    {lang === "DE" ? "03 / FRÜHERE ERFAHRUNG" : "03 / PRIOR EXPERIENCE"}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
+                    BUY-SIDE · CORPORATE / M&A · FINANCIAL SERVICES
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
+                  FNZ <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Fondsdepot Bank
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                  {lang === "DE"
+                    ? "Erwerb der Fondsdepot Bank"
+                    : "Acquisition of Fondsdepot Bank"}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-charcoal/10">
+                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst vor Gründung von Varda."
+                    : "Advised as part of the Ashurst Corporate/M&A team before founding Varda."}
+                </p>
+              </div>
+            </div>
+
+            {/* CASE 04: Catena-X Automotive Network */}
+            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
+              <div className="space-y-3.5">
+                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
+                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
+                    {lang === "DE" ? "04 / FRÜHERE ERFAHRUNG" : "04 / PRIOR EXPERIENCE"}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
+                    {lang === "DE"
+                      ? "TECHNOLOGIE · DATA GOVERNANCE · DIGITAL CONTRACTING"
+                      : "TECHNOLOGY · DATA GOVERNANCE · DIGITAL CONTRACTING"}
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
+                  Catena-X Automotive Network
+                </h3>
+
+                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                  {lang === "DE"
+                    ? "Governance- und Vertragsrahmen für das Datenökosystem der Automobilindustrie"
+                    : "Governance and contractual framework for the automotive data ecosystem"}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-6 border-t border-charcoal/10">
+                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
+                  {lang === "DE"
+                    ? "Beratung als Mitglied des Ashurst-Teams vor Gründung von Varda."
+                    : "Advised as part of the Ashurst team before founding Varda."}
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Subtle Selection Clarification & Link to Konstantin Section */}
+          <div className="mt-12 pt-6 border-t border-charcoal/15 space-y-3">
+            <p className="font-sans text-xs sm:text-sm text-charcoal/60 leading-relaxed">
+              {lang === "DE"
+                ? "Ausgewählte frühere Mandatserfahrung von Dr. Konstantin Filbinger vor Gründung von Varda Legal."
+                : "Selected prior experience of Dr Konstantin Filbinger before founding Varda Legal."}
+            </p>
+            <div>
+              <a
+                href="#konstantin"
+                className="font-mono text-xs uppercase tracking-[0.15em] font-bold text-charcoal hover:text-[#C0823E] border-b border-charcoal/40 hover:border-[#C0823E] pb-1 transition-colors inline-flex items-center"
+              >
+                <span>{lang === "DE" ? "MEHR ÜBER KONSTANTIN →" : "MORE ABOUT KONSTANTIN →"}</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
             SECTION 3 — THREE MANDATE WORLDS
             ========================================================================= */}
         <section id="mandate" aria-labelledby="mandate-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-[#FAF8F4] relative">
@@ -1948,7 +2155,7 @@ export default function App() {
               <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Mandate" : "Mandates"}</span>
             </div>
             <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-              02 / {lang === "DE" ? "MANDATSWELTEN" : "MANDATE WORLDS"}
+              03 / {lang === "DE" ? "MANDATSWELTEN" : "MANDATE WORLDS"}
             </span>
             <h2 id="mandate-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-charcoal leading-[1.12]">
               {lang === "DE" ? "Wobei Varda unterstützt." : "Where Varda supports."}
@@ -2082,7 +2289,7 @@ export default function App() {
               <span className="text-[#C0823E] font-semibold">{lang === "DE" ? "Arbeitsweise" : "How Varda Works"}</span>
             </div>
             <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-              03 / {lang === "DE" ? "SO ARBEITET VARDA" : "HOW VARDA WORKS"}
+              04 / {lang === "DE" ? "SO ARBEITET VARDA" : "HOW VARDA WORKS"}
             </span>
             <h2 id="methodology-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
               {lang === "DE" ? "So arbeitet Varda." : "How Varda works."}
@@ -2166,7 +2373,7 @@ export default function App() {
                 </span>
               </div>
               <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                04 / {lang === "DE" ? "HALTUNG" : "POINT OF VIEW"}
+                05 / {lang === "DE" ? "HALTUNG" : "POINT OF VIEW"}
               </span>
               <h2 id="manifesto-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.14]">
                 {lang === "DE"
@@ -2239,7 +2446,7 @@ export default function App() {
                   </span>
                 </div>
                 <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                  05 / KONSTANTIN
+                  06 / KONSTANTIN
                 </span>
                 <h2 id="konstantin-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
                   Dr. Konstantin Filbinger
@@ -2250,14 +2457,156 @@ export default function App() {
               <div className="space-y-4 font-sans text-base sm:text-lg text-charcoal/85 leading-relaxed pt-1">
                 <p>
                   {lang === "DE"
-                    ? "Ich habe in Corporate/M&A-Teams renommierter internationaler und deutscher Wirtschaftskanzleien gearbeitet. Heute berate ich mit Varda Gründer, Gesellschafter und Unternehmen bei Corporate-Themen und M&A – von der Strukturierung und Finanzierung bis zum Unternehmenskauf oder -verkauf."
-                    : "I have worked in Corporate/M&A teams of renowned international and German commercial law firms. Today, through Varda, I advise founders, shareholders and companies on corporate matters and M&A – from structuring and financing to company purchases or sales."}
+                    ? "Vor der Gründung von Varda habe ich in internationalen Wirtschaftskanzleien an komplexen gesellschaftsrechtlichen Mandaten und M&A-Transaktionen gearbeitet – darunter Transaktionen für Siemens Energy und FNZ sowie die Entwicklung von Teilen des Governance- und Vertragsrahmens für Catena-X."
+                    : "Before founding Varda, I worked on complex corporate and M&A matters in international law firms, including transactions for Siemens Energy and FNZ and the development of elements of the governance and contractual framework for Catena-X."}
                 </p>
                 <p>
                   {lang === "DE"
-                    ? "Bei Varda arbeite ich direkt mit meinen Mandanten. Mir ist wichtig, dass Sie bei den entscheidenden Punkten wissen, welche Optionen Sie haben, wie ich sie einschätze und was ich Ihnen empfehle. Die Entscheidung bleibt bei Ihnen – aber Sie sollten sie nicht auf Basis von Vermutungen treffen müssen."
-                    : "At Varda, I work directly with my clients. It is important to me that on the critical points, you know what options you have, how I assess them and what I recommend to you. The decision remains yours – but you should not have to make it based on assumptions."}
+                    ? "Heute berate ich mit Varda Gründer, Gesellschafter und Unternehmen direkt – von Strukturierung und Finanzierung bis zum Kauf oder Verkauf von Unternehmen."
+                    : "Today, through Varda, I advise founders, shareholders and companies directly – from structuring and financing to company purchases and sales."}
                 </p>
+                <p>
+                  {lang === "DE"
+                    ? "Bei Varda arbeite ich unmittelbar mit meinen Mandanten. Bei den entscheidenden Punkten sollen Sie wissen, welche Optionen Sie haben, wie ich sie bewerte und was ich empfehle. Die Entscheidung bleibt Ihre – aber sie sollte nicht auf Annahmen beruhen."
+                    : "At Varda, I work directly with my clients. On the critical points, you should know what options you have, how I assess them and what I recommend. The decision remains yours – but you should not have to make it based on assumptions."}
+                </p>
+              </div>
+
+              {/* Fine Divider */}
+              <div className="w-full h-[1px] bg-charcoal/10 my-4" />
+
+              {/* Selected Experience Module (Before Teaching) */}
+              <div className="space-y-6 pt-2">
+                <div className="space-y-2">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
+                    {lang === "DE" ? "AUSGEWÄHLTE ERFAHRUNG" : "SELECTED EXPERIENCE"}
+                  </span>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-charcoal leading-snug">
+                    {lang === "DE"
+                      ? "Komplexe Mandate. Vor und mit Varda."
+                      : "Complex matters. Before and at Varda."}
+                  </h3>
+                  <p className="font-sans text-sm sm:text-base text-charcoal/75 leading-relaxed">
+                    {lang === "DE"
+                      ? "Eine Auswahl von Transaktionen und strategischen Projekten aus der Zeit vor und nach der Gründung von Varda."
+                      : "A selection of transactions and strategic projects advised on before and after founding Varda."}
+                  </p>
+                </div>
+
+                {/* 2 x 2 Editorial Transaction Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 items-stretch pt-2">
+                  
+                  {/* MATTER A — CURRENT VARDA: klima&so -> PYURE */}
+                  <div className="border-t-2 border-[#C0823E] pt-4 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1.5">
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-bold block">
+                        {lang === "DE" ? "AKTUELL / VARDA · SELL-SIDE M&A" : "CURRENT / VARDA · SELL-SIDE M&A"}
+                      </span>
+                      <h4 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug pt-0.5">
+                        klima&so <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> PYURE
+                      </h4>
+                      <p className="font-sans text-sm font-medium text-charcoal/90 leading-snug">
+                        {lang === "DE" ? "Unternehmensverkauf" : "Company sale"}
+                      </p>
+                      <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed">
+                        {lang === "DE"
+                          ? "Federführende rechtliche Beratung der Gesellschafter."
+                          : "Lead legal counsel to the shareholders."}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* MATTER B — PRIOR EXPERIENCE: Siemens Energy -> Triton */}
+                  <div className="border-t border-charcoal/25 pt-4 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1.5">
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/55 font-semibold block">
+                        {lang === "DE" ? "FRÜHERE ERFAHRUNG · SELL-SIDE M&A" : "PRIOR EXPERIENCE · SELL-SIDE M&A"}
+                      </span>
+                      <h4 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug pt-0.5">
+                        Siemens Energy <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Triton
+                      </h4>
+                      <p className="font-sans text-sm font-medium text-charcoal/90 leading-snug">
+                        {lang === "DE"
+                          ? "Veräußerung des BIC- / Trench-Geschäfts"
+                          : "Sale of the BIC / Trench business"}
+                      </p>
+                      <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed">
+                        {lang === "DE"
+                          ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst."
+                          : "Advised as part of the Ashurst Corporate/M&A team."}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* MATTER C — PRIOR EXPERIENCE: Siemens Energy -> Mutares */}
+                  <div className="border-t border-charcoal/25 pt-4 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1.5">
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/55 font-semibold block">
+                        {lang === "DE" ? "FRÜHERE ERFAHRUNG · SELL-SIDE M&A" : "PRIOR EXPERIENCE · SELL-SIDE M&A"}
+                      </span>
+                      <h4 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug pt-0.5">
+                        Siemens Energy <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Mutares
+                      </h4>
+                      <p className="font-sans text-sm font-medium text-charcoal/90 leading-snug">
+                        {lang === "DE"
+                          ? "Veräußerung des Geschäftsbereichs Heat Transfer Technology"
+                          : "Sale of the Heat Transfer Technology business"}
+                      </p>
+                      <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed">
+                        {lang === "DE"
+                          ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst."
+                          : "Advised as part of the Ashurst Corporate/M&A team."}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* MATTER D — PRIOR EXPERIENCE: FNZ -> Fondsdepot Bank */}
+                  <div className="border-t border-charcoal/25 pt-4 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1.5">
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/55 font-semibold block">
+                        {lang === "DE" ? "FRÜHERE ERFAHRUNG · BUY-SIDE M&A" : "PRIOR EXPERIENCE · BUY-SIDE M&A"}
+                      </span>
+                      <h4 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug pt-0.5">
+                        FNZ <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Fondsdepot Bank
+                      </h4>
+                      <p className="font-sans text-sm font-medium text-charcoal/90 leading-snug">
+                        {lang === "DE"
+                          ? "Erwerb der Fondsdepot Bank"
+                          : "Acquisition of Fondsdepot Bank"}
+                      </p>
+                      <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed">
+                        {lang === "DE"
+                          ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst."
+                          : "Advised as part of the Ashurst Corporate/M&A team."}
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Distinct Strategic-Project Feature: Catena-X Automotive Network */}
+                <div className="border-t border-charcoal/20 pt-5 mt-2 space-y-2">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/55 font-semibold block">
+                    {lang === "DE"
+                      ? "FRÜHERE ERFAHRUNG · TECHNOLOGIE / GOVERNANCE"
+                      : "PRIOR EXPERIENCE · TECHNOLOGY / GOVERNANCE"}
+                  </span>
+                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+                    <h4 className="font-serif text-xl sm:text-2xl font-medium text-charcoal leading-snug">
+                      Catena-X Automotive Network
+                    </h4>
+                    <span className="font-sans text-sm font-medium text-charcoal/85">
+                      {lang === "DE"
+                        ? "Datenökosystem der Automobilindustrie"
+                        : "Automotive data ecosystem"}
+                    </span>
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm text-charcoal/70 leading-relaxed max-w-2xl">
+                    {lang === "DE"
+                      ? "Beratung zu Teilen des Governance Frameworks, Use-Case-Frameworks und der vertraglichen Architektur für den Datenaustausch als Mitglied des Ashurst-Teams."
+                      : "Advised on elements of the governance framework, use-case frameworks and contractual architecture for data exchange as part of the Ashurst team."}
+                  </p>
+                </div>
               </div>
 
               {/* Fine Divider */}
@@ -2317,7 +2666,7 @@ export default function App() {
         <section id="letsgo" className="py-16 md:py-24">
           <div id="kontakt" className="scroll-mt-24" />
           <div className="space-y-4 mb-12">
-            <span className="font-mono text-xs uppercase tracking-widest text-brand-red">06 / {d.letsgo.title}</span>
+            <span className="font-mono text-xs uppercase tracking-widest text-brand-red">07 / {d.letsgo.title}</span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal">{d.letsgo.subtitle}</h2>
           </div>
 
