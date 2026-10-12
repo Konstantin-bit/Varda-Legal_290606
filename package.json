@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "prebuild": "tsx scripts/generate-html.ts",
     "build": "vite build",
+    "generate-html": "tsx scripts/generate-html.ts",
+    "test:sync": "tsx scripts/verify-content-sync.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"

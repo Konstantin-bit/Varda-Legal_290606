@@ -1,0 +1,27 @@
+# IONOS Apache Web Server Configuration for Varda Legal
+Options -MultiViews
+DirectorySlash On
+DirectoryIndex index.html
+
+# Force UTF-8 encoding
+AddDefaultCharset UTF-8
+AddType text/html;charset=UTF-8 .html
+AddType text/xml;charset=UTF-8 .xml
+AddType application/json;charset=UTF-8 .json
+AddType text/plain;charset=UTF-8 .txt
+
+# Prevent directory listings
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Redirect /en to canonical /en/ with HTTP 301
+  RewriteRule ^en$ /en/ [R=301,L]
+
+  # No universal SPA catch-all rewrites:
+  # - / serves German index.html (via DirectoryIndex)
+  # - /en/ serves English en/index.html (via DirectoryIndex)
+  # - Nonexistent URLs return genuine HTTP 404
+</IfModule>

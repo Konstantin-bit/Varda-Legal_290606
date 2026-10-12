@@ -39,6 +39,7 @@ import {
   Zap
 } from "lucide-react";
 import { content, Language, Article } from "./types";
+import { staticContentData, siteMetadata, buildJsonLdSchema } from "./staticContent";
 import GruenderstrukturCheck from "./components/GruenderstrukturCheck";
 import VardaNavigator from "./components/VardaNavigator";
 
@@ -812,7 +813,15 @@ function MnaDecisionArchitecture({ lang }: { lang: Language }) {
 }
 
 export default function App() {
-  const [lang, setLang] = useState<Language>("EN");
+  const [lang, setLang] = useState<Language>(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.toLowerCase();
+      if (path.startsWith("/en") || path === "/en") {
+        return "EN";
+      }
+    }
+    return "DE";
+  });
   const [currentView, setCurrentView] = useState<"website" | "navigator">("website");
   const [activeSection, setActiveSection] = useState("home");
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
@@ -936,11 +945,29 @@ export default function App() {
     return () => clearInterval(carouselTimer);
   }, []);
 
+  // Language switcher that switches between / and /en/ cleanly with window history
+  const switchLanguage = (newLang: Language) => {
+    setLang(newLang);
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash;
+      const targetPath = newLang === "EN" ? "/en/" : "/";
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState(null, "", targetPath + (hash || ""));
+      }
+    }
+  };
+
   // Standalone linkability and language sync routing for "Gründerstruktur Check" and Varda Legal Navigator
   useEffect(() => {
     const handleRouting = () => {
       const hash = window.location.hash;
-      const path = window.location.pathname;
+      const path = window.location.pathname.toLowerCase();
+
+      if (path.startsWith("/en") || path === "/en") {
+        setLang("EN");
+      } else if (!hash.includes("en")) {
+        setLang("DE");
+      }
 
       if (hash === "#navigator") {
         setCurrentView("navigator");
@@ -950,7 +977,7 @@ export default function App() {
         setCurrentView("navigator");
         setLang("EN");
         window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (hash === "#founder-structure-check" || path.includes("/en")) {
+      } else if (hash === "#founder-structure-check") {
         setLang("EN");
         setCurrentView("website");
         setTimeout(() => {
@@ -1004,25 +1031,29 @@ export default function App() {
     // Run on initial mount
     handleRouting();
 
-    // Listen to hash/history changes for shared links or navigation
+    // Listen to hash and popstate changes
     window.addEventListener("hashchange", handleRouting);
-    return () => window.removeEventListener("hashchange", handleRouting);
+    window.addEventListener("popstate", handleRouting);
+    return () => {
+      window.removeEventListener("hashchange", handleRouting);
+      window.removeEventListener("popstate", handleRouting);
+    };
   }, []);
 
   // Enforce correct HTML browser title & Meta / Open Graph / Canonical & JSON-LD schema injection dynamically for GEO/AEO optimization
   useEffect(() => {
     // 1. Determine active page content parameters
-    const origin = typeof window !== "undefined" ? window.location.origin : "https://www.vardalegal.com";
-    const canonicalUrl = typeof window !== "undefined"
-      ? ("https://www.vardalegal.com" + window.location.pathname + (window.location.hash ? window.location.hash : ""))
-      : "https://www.vardalegal.com";
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://vardalegal.com";
+    const canonicalUrl = lang === "EN" ? "https://vardalegal.com/en/" : "https://vardalegal.com/";
 
-    let pageTitle = lang === "DE" 
-      ? "Varda Legal | Corporate & M&A für Gründer und Wachstumsunternehmen"
-      : "Varda Legal | Corporate & M&A for Founders and Growth Companies";
-    let pageDescription = lang === "DE"
-      ? "Varda Legal berät Gründer, Startups, Scale-ups und Gesellschafter bei Corporate-Themen, Finanzierungen, Unternehmenskäufen und Unternehmensverkäufen."
-      : "Varda Legal advises founders, startups, scale-ups and shareholders on corporate matters, financing, company acquisitions and company sales.";
+    // Sync html root lang attribute
+    if (typeof document !== "undefined" && document.documentElement) {
+      document.documentElement.lang = lang === "DE" ? "de" : "en";
+    }
+
+    const meta = siteMetadata[lang];
+    let pageTitle = meta.title;
+    let pageDescription = meta.description;
     let pageImage = `${origin}${execFigmaImage}`;
     let pageType = "website";
 
@@ -1050,6 +1081,21 @@ export default function App() {
     }
     canonicalLink.setAttribute("href", canonicalUrl);
 
+    // 3b. Dynamic Reciprocal hreflang injection
+    const updateHreflang = (hreflang: string, href: string) => {
+      let link = document.querySelector(`link[rel='alternate'][hreflang='${hreflang}']`);
+      if (!link) {
+        link = document.createElement("link");
+        link.setAttribute("rel", "alternate");
+        link.setAttribute("hreflang", hreflang);
+        document.head.appendChild(link);
+      }
+      link.setAttribute("href", href);
+    };
+    updateHreflang("de", meta.hreflangDe);
+    updateHreflang("en", meta.hreflangEn);
+    updateHreflang("x-default", meta.hreflangXDefault);
+
     // 4. Set Standard and Open Graph meta-tags
     const updateMetaTag = (attrName: "name" | "property", attrVal: string, contentVal: string) => {
       let tag = document.querySelector(`meta[${attrName}='${attrVal}']`);
@@ -1073,90 +1119,26 @@ export default function App() {
     updateMetaTag("property", "twitter:title", pageTitle);
     updateMetaTag("property", "twitter:description", pageDescription);
 
-    // 5. Build structured JSON-LD data
-    const graph: any[] = [
-      {
-        "@type": "WebSite",
-        "@id": "https://www.vardalegal.com/#website",
-        "url": "https://www.vardalegal.com",
-        "name": "Varda Legal",
-        "alternateName": "Varda",
-        "inLanguage": "de-DE"
-      },
-      {
-        "@type": "LegalService",
-        "@id": "https://www.vardalegal.com/#legalservice",
-        "name": "Varda Legal",
-        "url": "https://www.vardalegal.com",
-        "description": lang === "DE"
-          ? "Varda Legal berät Gründer, Startups, Scale-ups und Gesellschafter bei Corporate-Themen, Finanzierungen, Unternehmenskäufen und Unternehmensverkäufen."
-          : "Varda Legal advises founders, startups, scale-ups and shareholders on corporate matters, financing, company acquisitions and company sales.",
-        "areaServed": "DE",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "München",
-          "addressCountry": "DE"
-        },
-        "founder": {
-          "@type": "Person",
-          "name": "Dr. Konstantin Filbinger",
-          "jobTitle": "Rechtsanwalt",
-          "description": lang === "DE"
-            ? "Rechtsanwalt und Gründer von Varda Legal. Beratung von Gründern, Gesellschaftern und Unternehmen bei Corporate-Themen und M&A (u.a. Verkauf von klima&so an PYURE). Vor der Gründung von Varda Beratung an komplexen gesellschaftsrechtlichen Mandaten, M&A-Transaktionen und strategischen Technologieprojekten in internationalen Wirtschaftskanzleien (u.a. als Mitglied der Ashurst-Teams bei Transaktionen für Siemens Energy und FNZ sowie beim Governance- und Vertragsrahmen für Catena-X)."
-            : "German Attorney-at-Law (Rechtsanwalt) and Founder of Varda Legal. Advises founders, shareholders and companies on corporate matters and M&A (including the sale of klima&so to PYURE). Prior to founding Varda, advised on complex corporate matters, M&A transactions and strategic technology projects at international law firms (including as part of Ashurst teams on transactions for Siemens Energy and FNZ and on the governance and contractual framework for Catena-X).",
-          "knowsAbout": [
-            "Corporate & M&A",
-            "Sell-Side M&A",
-            "Buy-Side M&A",
-            "Corporate Governance",
-            "Data Governance & Digital Contracting",
-            "International Corporate and Tax Law",
-            "Private Law"
-          ],
-          "hasCredential": [
-            {
-              "@type": "EducationalOccupationalCredential",
-              "credentialCategory": "Lehrauftrag",
-              "recognizedBy": {
-                "@type": "CollegeOrUniversity",
-                "name": "Berlin College of Business and Technology"
-              },
-              "about": ["International Corporate and Tax Law", "Private Law"]
-            }
-          ]
-        },
-        "knowsAbout": [
-          "Corporate & M&A",
-          "Gesellschaftsrecht",
-          "M&A-Transaktionen",
-          "Unternehmenskauf",
-          "Unternehmensverkauf",
-          "Venture Capital & Finanzierungsrunden",
-          "Gesellschaftervereinbarungen"
-        ],
-        "audience": {
-          "@type": "Audience",
-          "audienceType": "Gründer, Startups, Scale-ups, Gesellschafter und Wachstumsunternehmen"
-        }
-      }
-    ];
+    // 5. Build structured JSON-LD data from single source of truth
+    const baseSchema = buildJsonLdSchema(lang) as { "@context": string; "@graph": any[] };
+    const graph: any[] = [...baseSchema["@graph"]];
 
     // If on Varda Navigator view, inject WebPage and Service JSON-LD schemas
     if (currentView === "navigator") {
       graph.push({
         "@type": "WebPage",
-        "@id": "https://www.vardalegal.com/#navigator-page",
+        "@id": "https://vardalegal.com/#navigator-page",
         "name": "Varda Legal Navigator",
         "description": "Interactive Executive Assessment tools for Corporate, Shareholders, Share structures and Commercial issues.",
-        "url": "https://www.vardalegal.com/#navigator"
+        "url": "https://vardalegal.com/#navigator"
       });
       graph.push({
         "@type": "Service",
-        "@id": "https://www.vardalegal.com/#navigator-service",
+        "@id": "https://vardalegal.com/#navigator-service",
         "name": "Varda Legal Navigator",
         "serviceType": "Legal Checkup and Interactive Analysis",
         "provider": {
-          "@id": "https://www.vardalegal.com/#legalservice"
+          "@id": "https://vardalegal.com/#legalservice"
         },
         "description": "Structured digital assessment tools providing decision support for founder agreements, corporate risk, and financial preparations."
       });
@@ -1202,10 +1184,10 @@ export default function App() {
     // Add blogs schema to keep reference of standard content
     graph.push({
       "@type": "Blog",
-      "@id": "https://www.vardalegal.com/#blog",
+      "@id": "https://vardalegal.com/#blog",
       "name": "Denkwerk",
       "publisher": {
-        "@id": "https://www.vardalegal.com/#legalservice"
+        "@id": "https://vardalegal.com/#legalservice"
       },
       "blogPost": [
         {
@@ -1485,7 +1467,7 @@ export default function App() {
             <div className="flex items-center border border-charcoal/15 px-2.5 py-1 font-mono text-[10px] tracking-wider bg-white/60 shadow-2xs">
               <button
                 id="lang-de-btn"
-                onClick={() => setLang("DE")}
+                onClick={() => switchLanguage("DE")}
                 className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
                   lang === "DE" ? "bg-charcoal text-paper-light font-bold" : "text-charcoal/60 hover:text-charcoal"
                 }`}
@@ -1495,7 +1477,7 @@ export default function App() {
               <span className="text-charcoal/25 px-1 select-none">|</span>
               <button
                 id="lang-en-btn"
-                onClick={() => setLang("EN")}
+                onClick={() => switchLanguage("EN")}
                 className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
                   lang === "EN" ? "bg-charcoal text-paper-light font-bold" : "text-charcoal/60 hover:text-charcoal"
                 }`}
@@ -1712,7 +1694,23 @@ export default function App() {
               {/* Bottom footer index */}
               <div className="pt-8 border-t border-charcoal/10 flex flex-col md:flex-row justify-between items-center text-[10px] sm:text-xs font-mono text-charcoal/40 gap-4">
                 <div className="tracking-wide">© 2026 DR. KONSTANTIN FILBINGER • VARDA LEGAL • MUNICH</div>
-                <div className="flex space-x-6 text-[10px]">
+                <div className="flex items-center space-x-6 text-[10px]">
+                  <div className="flex items-center space-x-2 font-mono">
+                    <button
+                      onClick={() => { switchLanguage("DE"); setIsMenuOpen(false); }}
+                      className={`px-1.5 py-0.5 rounded cursor-pointer transition-colors ${lang === "DE" ? "bg-charcoal text-paper-light font-bold" : "text-charcoal/60 hover:text-charcoal"}`}
+                    >
+                      DE
+                    </button>
+                    <span className="text-charcoal/20">|</span>
+                    <button
+                      onClick={() => { switchLanguage("EN"); setIsMenuOpen(false); }}
+                      className={`px-1.5 py-0.5 rounded cursor-pointer transition-colors ${lang === "EN" ? "bg-charcoal text-paper-light font-bold" : "text-charcoal/60 hover:text-charcoal"}`}
+                    >
+                      EN
+                    </button>
+                  </div>
+                  <span>•</span>
                   <button 
                     onClick={(e) => { e.preventDefault(); setIsMenuOpen(false); setActiveLegalModal("impressum"); }} 
                     className="hover:text-charcoal transition-colors cursor-pointer uppercase bg-transparent border-none p-0 tracking-widest font-semibold"
@@ -1875,9 +1873,7 @@ export default function App() {
                   klima&so <span className="text-[#C0823E] font-sans font-light mx-1 md:mx-2" aria-hidden="true">→</span> PYURE
                 </h2>
                 <p className="font-sans text-charcoal/85 text-base sm:text-lg leading-relaxed pt-1">
-                  {lang === "DE"
-                    ? "Varda hat die Gesellschafter von klima&so beim Verkauf des Unternehmens an PYURE beraten."
-                    : "Varda advised the shareholders of klima&so on the sale of the company to PYURE."}
+                  {staticContentData[lang].transactionDesc}
                 </p>
               </div>
 
@@ -1888,18 +1884,12 @@ export default function App() {
                 </span>
 
                 <div className="space-y-2 pt-1 text-xs font-mono text-charcoal/75">
-                  <div className="flex justify-between py-1.5 border-b border-charcoal/10">
-                    <span className="text-charcoal/40 uppercase tracking-widest">{lang === "DE" ? "Mandat" : "Mandate"}</span>
-                    <span className="font-semibold text-charcoal">{lang === "DE" ? "Gesellschafterberatung" : "Shareholder Advisory"}</span>
-                  </div>
-                  <div className="flex justify-between py-1.5 border-b border-charcoal/10">
-                    <span className="text-charcoal/40 uppercase tracking-widest">{lang === "DE" ? "Bereich" : "Area"}</span>
-                    <span className="font-semibold text-charcoal">Corporate / M&A</span>
-                  </div>
-                  <div className="flex justify-between py-1.5">
-                    <span className="text-charcoal/40 uppercase tracking-widest">{lang === "DE" ? "Rolle" : "Role"}</span>
-                    <span className="font-semibold text-[#C0823E]">Lead Legal Counsel</span>
-                  </div>
+                  {staticContentData[lang].transactionFacts.map((fact, fIdx) => (
+                    <div key={fIdx} className={`flex justify-between py-1.5 ${fIdx < staticContentData[lang].transactionFacts.length - 1 ? 'border-b border-charcoal/10' : ''}`}>
+                      <span className="text-charcoal/40 uppercase tracking-widest">{fact.label}</span>
+                      <span className={`font-semibold ${fact.label.toLowerCase().includes('rolle') || fact.label.toLowerCase().includes('role') ? 'text-[#C0823E]' : 'text-charcoal'}`}>{fact.value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1908,37 +1898,15 @@ export default function App() {
             <div className="lg:col-span-7 space-y-6 lg:pt-2">
               <div className="border-l-2 border-[#C0823E] pl-6 sm:pl-8 lg:pl-10 space-y-6">
                 <blockquote className="space-y-5 sm:space-y-6 font-serif text-lg sm:text-xl lg:text-[21px] text-charcoal/90 leading-[1.65] font-normal tracking-tight max-w-2xl">
-                  <p>
-                    {lang === "DE"
-                      ? "„Wir haben unser erstes Unternehmen verkauft. Heißt: Vertragsentwurf der Gegenseite auf dem Tisch, jede Menge Paragrafen und eine ziemlich klare Ahnung davon, dass wir nicht wissen, was wir da eigentlich lesen."
-                      : "“We sold our first company. That means: draft contract from the other side on the table, countless clauses, and a fairly clear sense that we didn't really know what we were reading."}
-                  </p>
-                  <p>
-                    {lang === "DE"
-                      ? "Konstantin war ab dem ersten Call der Co-Pilot, den man in so einer Situation braucht. Er hat den Entwurf komplett überarbeitet zurückgegeben, verhandlungsfertig, statt uns eine Liste mit Anmerkungen zu schicken. Er hat uns vor Dingen gewarnt, auf die wir von allein nie gekommen wären. Und er hat seine Linie offengelegt, bevor er losgelaufen ist, so dass wir sie bestätigen (oder eben ändern) konnten."
-                      : "Konstantin was the co-pilot you need in such a situation right from the very first call. He returned the draft completely revised and negotiation-ready, rather than just sending us a list of comments. He warned us about things we would never have thought of on our own. And he laid out his strategy before proceeding, so that we could confirm (or adjust) it."}
-                  </p>
-                  <p>
-                    {lang === "DE"
-                      ? "Was mich am meisten überzeugt hat: Er hat auch die weichen und emotionalen Punkte ernst genommen und in klare Klauseln im Vertrag statt als Randnotiz verstanden."
-                      : "What convinced me most: He took the soft and emotional points seriously too, translating them into clear clauses in the contract rather than treating them as side notes."}
-                  </p>
-                  <p>
-                    {lang === "DE"
-                      ? "Bei den entscheidenden Punkten wussten wir immer, welche Optionen wir haben und was Konstantin uns empfiehlt. Entschieden haben am Ende wir, aber eben informiert statt geraten. Das hat die Verhandlungen für uns deutlich einfacher gemacht."
-                      : "When it came to the critical decisions, we always knew our options and what Konstantin recommended. In the end, we were the ones who decided, but informed rather than guessing. That made the negotiations significantly easier for us."}
-                  </p>
-                  <p>
-                    {lang === "DE"
-                      ? "Ich hatte während des ganzen Prozesses nie das Gefühl, allein im Cockpit zu sitzen. Und wir sind sauber gelandet.“"
-                      : "Throughout the entire process, I never felt like I was sitting alone in the cockpit. And we landed cleanly.”"}
-                  </p>
+                  {staticContentData[lang].testimonialQuotes.map((quote, qIdx) => (
+                    <p key={qIdx}>{quote}</p>
+                  ))}
                 </blockquote>
 
                 {/* Attribution Area with Structural Placeholder */}
                 <div className="pt-4 border-t border-charcoal/10 space-y-1">
                   <cite className="not-italic font-mono text-xs uppercase tracking-widest text-charcoal/70 font-semibold block">
-                    — {lang === "DE" ? "Gesellschafter, klima&so" : "Shareholders, klima&so"}
+                    {staticContentData[lang].testimonialAttribution}
                   </cite>
                 </div>
               </div>
@@ -1989,135 +1957,43 @@ export default function App() {
           {/* 2 x 2 Editorial Grid on Desktop, Stacked Vertically on Mobile */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-10 md:gap-y-12 items-stretch">
             
-            {/* CASE 01: Siemens Energy -> Triton */}
-            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
-              <div className="space-y-3.5">
-                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
-                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
-                    {lang === "DE" ? "01 / FRÜHERE ERFAHRUNG" : "01 / PRIOR EXPERIENCE"}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
-                    SELL-SIDE · CORPORATE / M&A
-                  </span>
+            {/* 4 Selected Experience Cases */}
+            {staticContentData[lang].experienceCases.map((c, cIdx) => (
+              <div key={cIdx} className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
+                <div className="space-y-3.5">
+                  <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
+                    <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
+                      {c.num}
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
+                      {c.category}
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
+                    {c.parties.includes("→") ? (
+                      <>
+                        {c.parties.split("→")[0].trim()}{" "}
+                        <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span>{" "}
+                        {c.parties.split("→")[1].trim()}
+                      </>
+                    ) : (
+                      c.parties
+                    )}
+                  </h3>
+
+                  <p className="font-sans text-base text-charcoal/85 leading-relaxed">
+                    {c.summary}
+                  </p>
                 </div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
-                  Siemens Energy <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Triton
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Veräußerung des BIC- / Trench-Geschäfts"
-                    : "Sale of the BIC / Trench business"}
-                </p>
-              </div>
-
-              <div className="pt-4 mt-6 border-t border-charcoal/10">
-                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst vor Gründung von Varda."
-                    : "Advised as part of the Ashurst Corporate/M&A team before founding Varda."}
-                </p>
-              </div>
-            </div>
-
-            {/* CASE 02: Siemens Energy -> Mutares */}
-            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
-              <div className="space-y-3.5">
-                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
-                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
-                    {lang === "DE" ? "02 / FRÜHERE ERFAHRUNG" : "02 / PRIOR EXPERIENCE"}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
-                    SELL-SIDE · CORPORATE / M&A
-                  </span>
+                <div className="pt-4 mt-6 border-t border-charcoal/10">
+                  <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
+                    {c.attribution}
+                  </p>
                 </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
-                  Siemens Energy <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Mutares
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Veräußerung des Geschäftsbereichs Heat Transfer Technology"
-                    : "Sale of the Heat Transfer Technology business"}
-                </p>
               </div>
-
-              <div className="pt-4 mt-6 border-t border-charcoal/10">
-                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst vor Gründung von Varda."
-                    : "Advised as part of the Ashurst Corporate/M&A team before founding Varda."}
-                </p>
-              </div>
-            </div>
-
-            {/* CASE 03: FNZ -> Fondsdepot Bank */}
-            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
-              <div className="space-y-3.5">
-                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
-                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
-                    {lang === "DE" ? "03 / FRÜHERE ERFAHRUNG" : "03 / PRIOR EXPERIENCE"}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
-                    BUY-SIDE · CORPORATE / M&A · FINANCIAL SERVICES
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
-                  FNZ <span className="text-[#C0823E] font-sans font-light mx-1" aria-hidden="true">→</span> Fondsdepot Bank
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Erwerb der Fondsdepot Bank"
-                    : "Acquisition of Fondsdepot Bank"}
-                </p>
-              </div>
-
-              <div className="pt-4 mt-6 border-t border-charcoal/10">
-                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Beratung als Mitglied des Corporate/M&A-Teams von Ashurst vor Gründung von Varda."
-                    : "Advised as part of the Ashurst Corporate/M&A team before founding Varda."}
-                </p>
-              </div>
-            </div>
-
-            {/* CASE 04: Catena-X Automotive Network */}
-            <div className="border-t border-charcoal/25 pt-6 sm:pt-7 flex flex-col justify-between">
-              <div className="space-y-3.5">
-                <div className="flex flex-wrap items-baseline justify-between border-b border-charcoal/10 pb-3 gap-2">
-                  <span className="font-mono text-[11px] font-bold text-[#C0823E] tracking-widest uppercase">
-                    {lang === "DE" ? "04 / FRÜHERE ERFAHRUNG" : "04 / PRIOR EXPERIENCE"}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/60 font-medium">
-                    {lang === "DE"
-                      ? "TECHNOLOGIE · DATA GOVERNANCE · DIGITAL CONTRACTING"
-                      : "TECHNOLOGY · DATA GOVERNANCE · DIGITAL CONTRACTING"}
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug pt-0.5">
-                  Catena-X Automotive Network
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Governance- und Vertragsrahmen für das Datenökosystem der Automobilindustrie"
-                    : "Governance and contractual framework for the automotive data ecosystem"}
-                </p>
-              </div>
-
-              <div className="pt-4 mt-6 border-t border-charcoal/10">
-                <p className="font-mono text-xs text-charcoal/65 tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Beratung als Mitglied des Ashurst-Teams vor Gründung von Varda."
-                    : "Advised as part of the Ashurst team before founding Varda."}
-                </p>
-              </div>
-            </div>
+            ))}
 
           </div>
 
@@ -2164,110 +2040,49 @@ export default function App() {
 
           {/* 3 Mandate Worlds Editorial Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-stretch">
-            
-            {/* MANDATE WORLD 01: STARTUPS */}
-            <div className="border-t border-charcoal/25 pt-6 sm:pt-8 flex flex-col justify-between group transition-colors">
-              <div className="space-y-4">
-                <div className="flex items-baseline justify-between border-b border-charcoal/10 pb-3">
-                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
-                    01
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-medium">
-                    Startups
-                  </span>
+            {staticContentData[lang].mandatesList.map((mandate, mIdx) => {
+              const isCore = mIdx === 2;
+              return (
+                <div 
+                  key={mIdx} 
+                  className={`${isCore ? "border-t-2 border-[#C0823E] relative" : "border-t border-charcoal/25"} pt-6 sm:pt-8 flex flex-col justify-between group transition-colors`}
+                >
+                  {isCore && (
+                    <>
+                      <div id="unternehmensverkauf" className="scroll-mt-24" />
+                      <div id="ma-mandat" className="scroll-mt-24" />
+                      <div id="m-a" className="scroll-mt-24" />
+                    </>
+                  )}
+
+                  <div className="space-y-4">
+                    <div className={`flex items-baseline justify-between ${isCore ? "border-b border-[#C0823E]/20" : "border-b border-charcoal/10"} pb-3`}>
+                      <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
+                        {mandate.num}
+                      </span>
+                      <span className={`font-mono text-[10px] uppercase tracking-widest ${isCore ? "text-[#C0823E] font-semibold" : "text-charcoal/40 font-medium"}`}>
+                        {mandate.badge || mandate.title}
+                      </span>
+                    </div>
+
+                    <h3 className={`font-serif text-2xl sm:text-3xl ${isCore ? "lg:text-[32px]" : ""} font-medium text-charcoal leading-snug`}>
+                      {mandate.title}
+                    </h3>
+
+                    <p className={`font-sans text-base ${isCore ? "text-charcoal/90" : "text-charcoal/85"} leading-relaxed`}>
+                      {mandate.body}
+                    </p>
+                  </div>
+
+                  {/* Service Line */}
+                  <div className={`pt-6 mt-8 ${isCore ? "border-t border-[#C0823E]/30" : "border-t border-charcoal/15"}`}>
+                    <p className={`font-mono text-xs ${isCore ? "text-charcoal/85 font-medium" : "text-charcoal/70"} tracking-wide leading-relaxed`}>
+                      {mandate.services}
+                    </p>
+                  </div>
                 </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug">
-                  Startups
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Am Anfang geht es darum, die richtigen Dinge sauber zu regeln, ohne das Unternehmen mit Recht zu überfrachten. Varda berät Gründer und Startups bei Gesellschaftsstruktur, Founder Agreements, Finanzierungsrunden, Mitarbeiterbeteiligung und laufenden Gesellschafterfragen."
-                    : "In the early stages, it is about setting the right things up cleanly without overburdening the business with legal complexity. Varda advises founders and startups on corporate structure, founder agreements, financing rounds, employee participation and ongoing shareholder matters."}
-                </p>
-              </div>
-
-              {/* Service Line */}
-              <div className="pt-6 mt-8 border-t border-charcoal/15">
-                <p className="font-mono text-xs text-charcoal/70 tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Gründung · Founder Agreements · Finanzierung · VSOP / ESOP · Corporate & Governance"
-                    : "Formation · Founder Agreements · Financing · VSOP / ESOP · Corporate & Governance"}
-                </p>
-              </div>
-            </div>
-
-            {/* MANDATE WORLD 02: SCALE-UPS */}
-            <div className="border-t border-charcoal/25 pt-6 sm:pt-8 flex flex-col justify-between group transition-colors">
-              <div className="space-y-4">
-                <div className="flex items-baseline justify-between border-b border-charcoal/10 pb-3">
-                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
-                    02
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-charcoal/40 font-medium">
-                    Scale-ups
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal leading-snug">
-                  Scale-ups
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/85 leading-relaxed">
-                  {lang === "DE"
-                    ? "Mit dem Wachstum werden Gesellschafterstrukturen, Governance und Verträge anspruchsvoller. Varda unterstützt bei Finanzierungen, Beteiligungs- und Holdingstrukturen, strategischen Verträgen und Transaktionen."
-                    : "With growth, shareholder structures, governance and contracts become more demanding. Varda supports in financing, shareholding and holding structures, strategic agreements and transactions."}
-                </p>
-              </div>
-
-              {/* Service Line */}
-              <div className="pt-6 mt-8 border-t border-charcoal/15">
-                <p className="font-mono text-xs text-charcoal/70 tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Corporate & Governance · Finanzierung · Beteiligungsstrukturen · Strategische Verträge · Transaktionen"
-                    : "Corporate & Governance · Financing · Shareholding Structures · Strategic Agreements · Transactions"}
-                </p>
-              </div>
-            </div>
-
-            {/* MANDATE WORLD 03: M&A / UNTERNEHMENSVERKAUF (Restrained Elevated Prominence) */}
-            <div className="border-t-2 border-[#C0823E] pt-6 sm:pt-8 flex flex-col justify-between relative group transition-colors">
-              <div id="unternehmensverkauf" className="scroll-mt-24" />
-              <div id="ma-mandat" className="scroll-mt-24" />
-              <div id="m-a" className="scroll-mt-24" />
-
-              <div className="space-y-4">
-                <div className="flex items-baseline justify-between border-b border-[#C0823E]/20 pb-3">
-                  <span className="font-mono text-xs font-bold text-[#C0823E] tracking-widest">
-                    03
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#C0823E] font-semibold">
-                    [ {lang === "DE" ? "KERNBEREICH" : "CORE FOCUS"} ]
-                  </span>
-                </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl lg:text-[32px] font-medium text-charcoal leading-snug">
-                  {lang === "DE" ? "M&A / Unternehmensverkauf" : "M&A / Company Sale"}
-                </h3>
-
-                <p className="font-sans text-base text-charcoal/90 leading-relaxed">
-                  {lang === "DE"
-                    ? "Wenn Sie ein Unternehmen kaufen oder verkaufen, sollten Sie bei den entscheidenden Punkten wissen, welche Optionen Sie haben und was wir empfehlen. Varda begleitet Gründer, Gesellschafter und Unternehmen von der Vorbereitung über Due Diligence und Vertragsverhandlung bis zu Signing und Closing."
-                    : "When buying or selling a company, you should know your options and what we recommend on the critical points. Varda guides founders, shareholders and companies from preparation through due diligence and contract negotiation to signing and closing."}
-                </p>
-              </div>
-
-              {/* Service Line */}
-              <div className="pt-6 mt-8 border-t border-[#C0823E]/30">
-                <p className="font-mono text-xs text-charcoal/85 font-medium tracking-wide leading-relaxed">
-                  {lang === "DE"
-                    ? "Unternehmensverkauf · Unternehmenskauf · Founder Exit · Small Cap M&A"
-                    : "Company Sale · Company Acquisition · Founder Exit · Small Cap M&A"}
-                </p>
-              </div>
-            </div>
-
+              );
+            })}
           </div>
         </section>
 
@@ -2303,36 +2118,7 @@ export default function App() {
 
           {/* Four Steps Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 items-stretch">
-            {[
-              {
-                num: "01",
-                title: lang === "DE" ? "Das Ziel verstehen" : "Understand the objective",
-                body: lang === "DE"
-                  ? "Was soll am Ende erreicht sein? Welche wirtschaftlichen, strategischen oder persönlichen Punkte sind dabei wichtig?"
-                  : "What should be achieved in the end? Which commercial, strategic or personal priorities matter?"
-              },
-              {
-                num: "02",
-                title: lang === "DE" ? "Rechtslage und Kontext bewerten" : "Assess legal framework and context",
-                body: lang === "DE"
-                  ? "Welche rechtlichen Themen sind für die Entscheidung tatsächlich relevant? Und welche nicht?"
-                  : "Which legal topics are genuinely relevant to the decision? And which are not?"
-              },
-              {
-                num: "03",
-                title: lang === "DE" ? "Realistische Optionen entwickeln" : "Develop realistic options",
-                body: lang === "DE"
-                  ? "Welche Wege gibt es? Wo liegen die Unterschiede bei Risiko, Aufwand und Ergebnis?"
-                  : "What paths are available? Where do the differences lie in risk, effort and outcome?"
-              },
-              {
-                num: "04",
-                title: lang === "DE" ? "Den nächsten Schritt empfehlen" : "Recommend the next step",
-                body: lang === "DE"
-                  ? "Sie sollten wissen, was wir empfehlen, warum wir es empfehlen und was als Nächstes zu tun ist."
-                  : "You should know what we recommend, why we recommend it and what to do next."
-              }
-            ].map((step, idx) => (
+            {staticContentData[lang].methodSteps.map((step, idx) => (
               <div 
                 key={idx} 
                 className="border-t border-charcoal/25 pt-6 flex flex-col justify-start space-y-3.5 group hover:border-[#C0823E] transition-colors duration-300"
@@ -2384,20 +2170,10 @@ export default function App() {
 
             {/* Right Column: Editorial Manifesto Text (lg:col-span-7) */}
             <div className="lg:col-span-7 space-y-6 text-charcoal/85 font-sans text-base sm:text-lg leading-relaxed lg:pt-8">
-              <p>
-                {lang === "DE"
-                  ? "Sie haben ein Ziel. Ein rechtliches Thema macht den Weg dorthin komplizierter."
-                  : "You have a goal. A legal issue makes the path there more complicated."}
-              </p>
-              <p>
-                {lang === "DE"
-                  ? "Gute Rechtsberatung sollte diese Komplexität reduzieren, nicht vergrößern. Sie sollte Ihnen helfen, eine fundierte Entscheidung zu treffen und weiterzumachen – ohne unnötiges Zögern, „es kommt darauf an“-Vorbehalte oder juristischen Chichi."
-                  : "Good legal advice should reduce that complexity, not increase it. It should help you make an informed decision and move forward – without unnecessary hesitation, \"it depends\" caveats or legalese."}
-              </p>
+              <p>{staticContentData[lang].manifestParagraphs[0]}</p>
+              <p>{staticContentData[lang].manifestParagraphs[1]}</p>
               <p className="pt-4 border-t border-charcoal/10 text-charcoal font-medium">
-                {lang === "DE"
-                  ? "Rechtsberatung funktioniert für uns nur dann, wenn sie den wirtschaftlichen, operativen und strategischen Kontext mitdenkt. Sonst sind es nur Worte."
-                  : "For us, legal advice only works when it takes the commercial, operational and strategic context into account. Otherwise, it is just words."}
+                {staticContentData[lang].manifestParagraphs[2]}
               </p>
             </div>
 
@@ -2453,23 +2229,11 @@ export default function App() {
                 </h2>
               </div>
 
-              {/* Exact Body Copy */}
+              {/* Exact Body Copy from single source of truth */}
               <div className="space-y-4 font-sans text-base sm:text-lg text-charcoal/85 leading-relaxed pt-1">
-                <p>
-                  {lang === "DE"
-                    ? "Vor der Gründung von Varda habe ich in internationalen Wirtschaftskanzleien an komplexen gesellschaftsrechtlichen Mandaten und M&A-Transaktionen gearbeitet – darunter Transaktionen für Siemens Energy und FNZ sowie die Entwicklung von Teilen des Governance- und Vertragsrahmens für Catena-X."
-                    : "Before founding Varda, I worked on complex corporate and M&A matters in international law firms, including transactions for Siemens Energy and FNZ and the development of elements of the governance and contractual framework for Catena-X."}
-                </p>
-                <p>
-                  {lang === "DE"
-                    ? "Heute berate ich mit Varda Gründer, Gesellschafter und Unternehmen direkt – von Strukturierung und Finanzierung bis zum Kauf oder Verkauf von Unternehmen."
-                    : "Today, through Varda, I advise founders, shareholders and companies directly – from structuring and financing to company purchases and sales."}
-                </p>
-                <p>
-                  {lang === "DE"
-                    ? "Bei Varda arbeite ich unmittelbar mit meinen Mandanten. Bei den entscheidenden Punkten sollen Sie wissen, welche Optionen Sie haben, wie ich sie bewerte und was ich empfehle. Die Entscheidung bleibt Ihre – aber sie sollte nicht auf Annahmen beruhen."
-                    : "At Varda, I work directly with my clients. On the critical points, you should know what options you have, how I assess them and what I recommend. The decision remains yours – but you should not have to make it based on assumptions."}
-                </p>
+                {staticContentData[lang].konstantinBio.map((paragraph, pIdx) => (
+                  <p key={pIdx}>{paragraph}</p>
+                ))}
               </div>
 
               {/* Fine Divider */}
@@ -2764,14 +2528,14 @@ export default function App() {
               <div className="pt-2 flex items-center space-x-3 font-mono text-xs">
                 <span className="text-charcoal/40 text-[10px] uppercase font-bold">{lang === "DE" ? "Sprache:" : "Language:"}</span>
                 <button 
-                  onClick={() => setLang("DE")}
+                  onClick={() => switchLanguage("DE")}
                   className={`px-1.5 py-0.5 font-bold transition-colors cursor-pointer ${lang === "DE" ? "text-brand-red border-b border-brand-red" : "text-charcoal/50 hover:text-charcoal"}`}
                 >
                   DE
                 </button>
                 <span className="text-charcoal/20">•</span>
                 <button 
-                  onClick={() => setLang("EN")}
+                  onClick={() => switchLanguage("EN")}
                   className={`px-1.5 py-0.5 font-bold transition-colors cursor-pointer ${lang === "EN" ? "text-brand-red border-b border-brand-red" : "text-charcoal/50 hover:text-charcoal"}`}
                 >
                   EN

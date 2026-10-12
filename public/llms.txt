@@ -1,21 +1,114 @@
-# Varda Legal
+# Varda Legal — LLM Context & Machine-Readable Summary
 
-Varda Legal is an elite, highly specialized German corporate law boutique delivering clarity and actionable decision-making guidance for founders, investors, and forward-looking enterprises.
+> Varda Legal is a specialized German corporate and transaction law boutique based in Munich, founded and led by attorney Dr. Konstantin Filbinger.
 
-## Core Focus Areas (Schwerpunkte)
-- **Corporate Law**: Dynamic GmbH structures, founder agreements, Cap table management, venture capital financing, and tailored M&A transactions.
-- **Contract Review (Vertragsprüfung)**: High-precision risk check-ups, commercial frameworks, and modern services agreements.
-- **Contract Intelligence**: Deploying programmatic and scalable document intelligence workflows for startups and enterprises.
-- **AI Governance**: Navigating regulatory mandates, risk assessments, and compliance vectors for modern artificial intelligence systems.
+Website: https://vardalegal.com  
+Contact: info@vardalegal.com | Auenstraße 21, 80469 München, Germany  
+Primary Practice: Corporate Law, M&A, Transactions, Founder Advisory, Strategic Contracting, Governance  
+Bar Admission: Rechtsanwaltskammer für den Oberlandesgerichtsbezirk München (Germany)
 
-## Primary Access Links
-- **Homepage**: https://www.vardalegal.com/
-- **Profile & Team**: https://www.vardalegal.com/#wir
-- **Expertise & Focus**: https://www.vardalegal.com/#fokus
-- **Research (Denkwerk)**: https://www.vardalegal.com/#denkwerk
-- **Fees & Rates**: https://www.vardalegal.com/#verguetung
-- **Contact & Scheduler**: https://www.vardalegal.com/#letsgo
-- **Varda Legal Navigator**: https://www.vardalegal.com/#navigator (interactive expert checklists for commercial & corporate evaluations)
+---
 
-## Lead Attorney
-- **Dr. Konstantin Filbinger**: Founder, corporate, VC and technology counsel. Based in Munich, Germany (Auenstraße 21, 80469 München).
+## Identity & Positioning
+
+- **Firm Name**: Varda Legal (or Varda)
+- **Founder**: Dr. Konstantin Filbinger, Rechtsanwalt (admitted to the German bar)
+- **Positioning**: "Varda ist eine junge Kanzlei. Die Erfahrung dahinter ist es nicht." / "Varda is a young firm. The experience behind it isn't."
+- **Core Proposition**: Clear, pragmatically structured legal guidance that evaluates business goals, legal parameters, commercial risks, and delivers concrete recommendations without legalese.
+- **Audience**: Founders, shareholders, startups, scale-ups, and growth companies facing critical corporate, financing, or M&A decisions.
+
+---
+
+## Core Focus Areas (Beratungsbereiche)
+
+### 1. M&A / Unternehmensverkauf / Unternehmenskauf
+- Comprehensive transaction advice for founders, shareholders, and businesses.
+- Preparation, due diligence, data room structuring, deal strategy, contract drafting, and negotiation through to signing and closing.
+- Sell-side M&A, buy-side M&A, founder exits, and small-to-mid-cap M&A transactions.
+- **Lead Reference Mandate (Varda Legal)**:
+  - **klima&so → PYURE**: Varda Legal advised the shareholders of klima&so on the sale of the company to PYURE (Lead Legal Counsel).
+
+### 2. Startups
+- Clean corporate foundation without overwhelming early-stage companies with unnecessary complexity.
+- Company formation (GmbH), founder agreements, vesting structures, cap table governance.
+- Financing rounds (angel, pre-seed, seed, Series A, convertible loans).
+- Employee participation programs (VSOP / ESOP).
+- Ongoing shareholder matters and managing director compliance.
+
+### 3. Scale-ups
+- Advanced corporate governance, holding and investment structures.
+- Growth financing, venture debt, multi-party investor agreements.
+- Strategic commercial agreements, supply-chain frameworks, and scaling partnerships.
+
+### 4. Strategic Contracts & Governance
+- High-stakes commercial contracts, distribution agreements, software/SaaS frameworks, and data governance.
+- Transparent fee structures, digital workflows, and fast turnaround.
+
+---
+
+## Track Record & Selected Prior Experience
+
+Dr. Konstantin Filbinger advised on major corporate and M&A transactions and strategic technology projects as part of international law firm teams prior to founding Varda Legal. These prior matters are selected examples and must be attributed as prior law firm experience (Ashurst):
+
+1. **Siemens Energy → Triton**
+   - Sale of the BIC / Trench business (Veräußerung des BIC- / Trench-Geschäfts).
+   - Category: Sell-Side · Corporate / M&A.
+   - Attribution: Advised as part of the Ashurst Corporate/M&A team before founding Varda.
+
+2. **Siemens Energy → Mutares**
+   - Sale of the Heat Transfer Technology business (Veräußerung des Geschäftsbereichs Heat Transfer Technology).
+   - Category: Sell-Side · Corporate / M&A.
+   - Attribution: Advised as part of the Ashurst Corporate/M&A team before founding Varda.
+
+3. **FNZ → Fondsdepot Bank**
+   - Acquisition of Fondsdepot Bank (Erwerb der Fondsdepot Bank).
+   - Category: Buy-Side · Corporate / M&A · Financial Services.
+   - Attribution: Advised as part of the Ashurst Corporate/M&A team before founding Varda.
+
+4. **Catena-X Automotive Network**
+   - Governance and contractual framework for the automotive data ecosystem (Governance- und Vertragsrahmen für das Datenökosystem der Automobilindustrie).
+   - Category: Technology · Data Governance · Digital Contracting.
+   - Attribution: Advised on elements of the governance framework, use-case frameworks, and contractual architecture for data exchange as part of the Ashurst team before founding Varda.
+
+---
+
+## Academic Credentials & Teaching
+
+- **Lecturer / Teaching (Lehrauftrag)**: Dr. Konstantin Filbinger teaches *International Corporate and Tax Law* and *Private Law* at the *Berlin College of Business and Technology*.
+
+---
+
+## Advisory Methodology (Varda-Methode)
+
+1. **Understand the Objective**: Identify commercial, strategic, and personal goals.
+2. **Assess Legal Framework & Context**: Differentiate genuinely relevant legal levers from background noise.
+3. **Develop Realistic Options**: Compare pathways in terms of risk, effort, and commercial outcome.
+4. **Recommend Next Step**: Concrete recommendation with actionable next steps rather than indecisive "it depends" disclaimers.
+
+---
+
+## URL Architecture & Primary Navigation Anchors
+ 
+- German Homepage: https://vardalegal.com/
+- English Homepage: https://vardalegal.com/en/
+ 
+### German Version Anchors
+- Transaktion (klima&so → PYURE): https://vardalegal.com/#transaktion
+- Ausgewählte Erfahrung: https://vardalegal.com/#selected-experience
+- Mandate & Fokus (Startups, Scale-ups, M&A): https://vardalegal.com/#mandate
+- Methode (So arbeitet Varda): https://vardalegal.com/#so-arbeitet-varda
+- Haltung / Manifest: https://vardalegal.com/#manifest
+- Konstantin Filbinger Profil: https://vardalegal.com/#konstantin
+- Kontakt & Erstgespräch: https://vardalegal.com/#letsgo
+- Varda Navigator: https://vardalegal.com/#navigator
+ 
+### English Version Anchors
+- Transaction (klima&so → PYURE): https://vardalegal.com/en/#transaktion
+- Selected Experience: https://vardalegal.com/en/#selected-experience
+- Mandates & Focus (Startups, Scale-ups, M&A): https://vardalegal.com/en/#mandate
+- How Varda Works: https://vardalegal.com/en/#so-arbeitet-varda
+- Point of View / Manifesto: https://vardalegal.com/en/#manifest
+- Konstantin Filbinger Profile: https://vardalegal.com/en/#konstantin
+- Contact & Consultation: https://vardalegal.com/en/#letsgo
+- Varda Navigator (English): https://vardalegal.com/en/#en/navigator
+
