@@ -138,7 +138,7 @@ export const content: Record<Language, ContentData> = {
       wir: "Über Varda",
       letsgo: "Kontakt",
       cta: "Erstgespräch vereinbaren",
-      verguetung: "Vergütung",
+      verguetung: "Festhonorar",
       fff: "Form follows function",
     },
     hero: {
@@ -703,7 +703,7 @@ Token-Recovery-Probleme aufgrund Überweisungen an eine Wallet, deren Schlüssel
       wir: "About Varda",
       letsgo: "Contact",
       cta: "Book a Conversation",
-      verguetung: "Fees",
+      verguetung: "Fixed Fee",
       fff: "Form follows function",
     },
     hero: {
@@ -713,7 +713,7 @@ Token-Recovery-Probleme aufgrund Überweisungen an eine Wallet, deren Schlüssel
       directSentence: "You work directly with Dr Konstantin Filbinger, who assesses the legal position in its commercial context and recommends a workable next step.",
       cta: "Discuss your matter",
       secCta: "How Varda works",
-      trustCue: "Founder-led boutique in Munich · Direct work with Konstantin Filbinger",
+      trustCue: "Munich boutique · Direct collaboration with Konstantin Filbinger",
       stats: [
         { value: "50+", label: "Successful Financing Rounds" },
         { value: "€450M+", label: "Transaction Volume Managed" },

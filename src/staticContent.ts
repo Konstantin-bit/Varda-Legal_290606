@@ -85,6 +85,8 @@ export interface StaticPageContent {
     title: string;
     body: string;
   }[];
+  feeNoteLabel: string;
+  feeNoteStatement: string;
   manifestSecNum: string;
   manifestTitle: string;
   manifestParagraphs: string[];
@@ -226,6 +228,8 @@ export const staticContentData: Record<Language, StaticPageContent> = {
         body: "Sie sollten wissen, was wir empfehlen, warum wir es empfehlen und was als Nächstes zu tun ist."
       }
     ],
+    feeNoteLabel: "HONORAR",
+    feeNoteStatement: "Klarer Auftrag. Fester Preis.",
     manifestSecNum: "05 / HALTUNG",
     manifestTitle: "Recht ist keine Raketenwissenschaft. Tun wir nicht so, als wäre es eine.",
     manifestParagraphs: [
@@ -373,6 +377,8 @@ export const staticContentData: Record<Language, StaticPageContent> = {
         body: "You should know what we recommend, why we recommend it and what to do next."
       }
     ],
+    feeNoteLabel: "FEES",
+    feeNoteStatement: "Clear scope. Fixed fee.",
     manifestSecNum: "05 / POINT OF VIEW",
     manifestTitle: "Law is not rocket science. Let's not pretend it is.",
     manifestParagraphs: [
@@ -479,6 +485,7 @@ export function buildJsonLdSchema(lang: Language): object {
           "Gesellschaftervereinbarungen",
           "VSOP / ESOP Mitarbeiterbeteiligung"
         ],
+        "priceRange": "$$",
         "audience": {
           "@type": "Audience",
           "audienceType": isDe
@@ -573,6 +580,9 @@ export function renderStaticHtmlForLanguage(lang: Language): string {
               <p>${s.body}</p>
             </li>`).join('')}
           </ol>
+          <div>
+            <p><strong>${d.feeNoteLabel}</strong> — ${d.feeNoteStatement}</p>
+          </div>
         </section>
 
         <!-- Point of View -->

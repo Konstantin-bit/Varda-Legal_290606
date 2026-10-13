@@ -832,8 +832,6 @@ export default function App() {
   const [newInvestment, setNewInvestment] = useState<number>(500000);
   const [optionPool, setOptionPool] = useState<number>(10); // in %
 
-  // Fee calculation state
-  const [selectedFeeAddons, setSelectedFeeAddons] = useState<string[]>([]);
   
   const handleNavigateToConsult = (_msg: string) => {
     document.getElementById("letsgo")?.scrollIntoView({ behavior: "smooth" });
@@ -1246,7 +1244,7 @@ export default function App() {
   // Active section spy on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "wir", "fokus", "denkwerk", "verguetung", "letsgo"];
+      const sections = ["home", "transaktion", "selected-experience", "mandate", "so-arbeitet-varda", "manifest", "konstantin", "letsgo"];
       const scrollPosition = window.scrollY + 200;
 
       for (const section of sections) {
@@ -1267,24 +1265,6 @@ export default function App() {
   }, []);
 
   const d = content[lang];
-
-  const toggleFeeAddon = (addonKey: string) => {
-    if (selectedFeeAddons.includes(addonKey)) {
-      setSelectedFeeAddons(selectedFeeAddons.filter(a => a !== addonKey));
-    } else {
-      setSelectedFeeAddons([...selectedFeeAddons, addonKey]);
-    }
-  };
-
-  const getAddonPrice = (key: string) => {
-    switch (key) {
-      case "esop": return 1500;
-      case "convertible": return 950;
-      case "saas": return 1200;
-      case "gdpr": return 850;
-      default: return 0;
-    }
-  };
 
   // Luxury Wendelstein Editorial slide definitions (Language aware)
   const heroSlides = [
@@ -2137,12 +2117,22 @@ export default function App() {
               </div>
             ))}
           </div>
+
+          {/* Editorial Footnote / Fee Statement */}
+          <div className="mt-12 md:mt-14 pt-6 border-t border-charcoal/15 flex flex-col sm:flex-row sm:items-baseline gap-2.5 sm:gap-6">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold shrink-0">
+              {staticContentData[lang].feeNoteLabel}
+            </span>
+            <p className="font-serif text-lg sm:text-xl text-charcoal font-medium leading-normal">
+              {staticContentData[lang].feeNoteStatement}
+            </p>
+          </div>
         </section>
 
         {/* =========================================================================
             SECTION 5: MANIFESTO / RECHT IST KEINE RAKETENWISSENSCHAFT
             ========================================================================= */}
-        <section id="manifest" aria-labelledby="manifesto-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-[#FAF8F4] relative">
+        <section id="manifest" aria-labelledby="manifesto-heading" className="py-16 md:py-24 border-b border-charcoal/10 bg-white relative">
           <div id="philosophie" className="scroll-mt-24" />
           <div id="haltung" className="scroll-mt-24" />
           <div id="point-of-view" className="scroll-mt-24" />
@@ -2159,7 +2149,7 @@ export default function App() {
                 </span>
               </div>
               <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                05 / {lang === "DE" ? "HALTUNG" : "POINT OF VIEW"}
+                {staticContentData[lang].manifestSecNum}
               </span>
               <h2 id="manifesto-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.14]">
                 {lang === "DE"
@@ -2222,7 +2212,7 @@ export default function App() {
                   </span>
                 </div>
                 <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">
-                  06 / KONSTANTIN
+                  {staticContentData[lang].konstantinSecNum}
                 </span>
                 <h2 id="konstantin-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal leading-[1.12]">
                   Dr. Konstantin Filbinger
@@ -2430,7 +2420,7 @@ export default function App() {
         <section id="letsgo" className="py-16 md:py-24">
           <div id="kontakt" className="scroll-mt-24" />
           <div className="space-y-4 mb-12">
-            <span className="font-mono text-xs uppercase tracking-widest text-brand-red">07 / {d.letsgo.title}</span>
+            <span className="font-mono text-xs uppercase tracking-widest text-[#C0823E] font-bold block">{staticContentData[lang].contactSecNum}</span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-charcoal">{d.letsgo.subtitle}</h2>
           </div>
 

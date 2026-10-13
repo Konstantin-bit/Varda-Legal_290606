@@ -32,6 +32,13 @@ async function runRegressionTest() {
     console.log('✓ PASS: App.tsx consumes staticContentData[lang].transactionDesc directly');
   }
 
+  if (!appTsxContent.includes('{staticContentData[lang].feeNoteStatement}')) {
+    console.error('❌ FAIL: App.tsx does not consume staticContentData[lang].feeNoteStatement directly');
+    failed = true;
+  } else {
+    console.log('✓ PASS: App.tsx consumes staticContentData[lang].feeNoteStatement directly');
+  }
+
   // 2. Verify static generator consumes staticContentData
   console.log('\n2. Checking static HTML generation from staticContentData...');
   const deStaticHtml = renderStaticHtmlForLanguage('DE');
@@ -49,6 +56,35 @@ async function runRegressionTest() {
     failed = true;
   } else {
     console.log('✓ PASS: English static HTML contains exact staticContentData.EN.transactionDesc');
+  }
+
+  if (!deStaticHtml.includes(staticContentData.DE.feeNoteStatement)) {
+    console.error('❌ FAIL: German static HTML does not contain staticContentData.DE.feeNoteStatement');
+    failed = true;
+  } else {
+    console.log('✓ PASS: German static HTML contains exact staticContentData.DE.feeNoteStatement');
+  }
+
+  if (!enStaticHtml.includes(staticContentData.EN.feeNoteStatement)) {
+    console.error('❌ FAIL: English static HTML does not contain staticContentData.EN.feeNoteStatement');
+    failed = true;
+  } else {
+    console.log('✓ PASS: English static HTML contains exact staticContentData.EN.feeNoteStatement');
+  }
+
+  // Verify obsolete standalone pricing section is completely removed
+  if (deStaticHtml.includes('05 / HONORARMODELL') || deStaticHtml.includes('Klarer Scope. Fester Preis.') || deStaticHtml.includes('id="honorar"')) {
+    console.error('❌ FAIL: German static HTML still contains obsolete standalone pricing section or anchor');
+    failed = true;
+  } else {
+    console.log('✓ PASS: German static HTML does not contain obsolete standalone pricing section or anchor');
+  }
+
+  if (enStaticHtml.includes('05 / FEE MODEL') || enStaticHtml.includes('id="honorar"') || enStaticHtml.includes('id="fees"')) {
+    console.error('❌ FAIL: English static HTML still contains obsolete standalone pricing section or anchor');
+    failed = true;
+  } else {
+    console.log('✓ PASS: English static HTML does not contain obsolete standalone pricing section or anchor');
   }
 
   // 3. Regression Simulation: prove that modifying transactionDesc updates both outputs
